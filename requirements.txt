@@ -3,3 +3,4 @@ djangorestframework
 django-phonenumber-field
 django-tinymce
 Pillow
+django-jazzmin

@@ -26,3 +26,24 @@ class BoxPaymentTestCase(TestCase):
 		self.assertFalse(Total.objects.filter(student=self.student, fees=self.fees, month=1).exists())
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

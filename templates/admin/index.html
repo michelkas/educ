@@ -1,0 +1,141 @@
+{% extends "admin/base_site.html" %}
+{% load admin_counts log %}
+
+{% block content_title %}Tableau de bord{% endblock %}
+
+{% block breadcrumbs %}
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'admin:index' %}">Accueil</a></li>
+    <li class="breadcrumb-item active">Tableau de bord</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  {% url 'admin:students_students_changelist' as students_url %}
+  {% url 'admin:staff_staff_changelist' as staff_url %}
+  {% url 'admin:finance_box_changelist' as payments_url %}
+
+  <div class="col-12 admin-dashboard-shell">
+    <section class="admin-dashboard-hero">
+      <div class="admin-dashboard-hero-main">
+        <span class="admin-dashboard-badge"><i class="fas fa-shield-alt"></i> While Educ Admin</span>
+        <h2>Tableau de bord</h2>
+        <p>Vue générale de l’école, des opérations pédagogiques, du contenu public et des finances.</p>
+      </div>
+      <div class="admin-dashboard-actions">
+        {% if students_url %}
+          <a class="admin-dashboard-action admin-dashboard-action-primary" href="{{ students_url }}">
+            <i class="fas fa-user-graduate"></i>
+            <span>Élèves</span>
+          </a>
+        {% endif %}
+        {% if staff_url %}
+          <a class="admin-dashboard-action" href="{{ staff_url }}">
+            <i class="fas fa-users-cog"></i>
+            <span>Staff</span>
+          </a>
+        {% endif %}
+        {% if payments_url %}
+          <a class="admin-dashboard-action" href="{{ payments_url }}">
+            <i class="fas fa-wallet"></i>
+            <span>Caisse</span>
+          </a>
+        {% endif %}
+      </div>
+    </section>
+
+    <nav class="admin-dashboard-tabs" aria-label="Sections du tableau de bord">
+      <a href="#dashboard-overview" class="active">Vue globale</a>
+      <a href="#dashboard-apps">Applications</a>
+      <a href="#dashboard-activity">Activité récente</a>
+    </nav>
+
+    <section class="admin-dashboard-stats">
+      {% admin_counts_panel %}
+    </section>
+
+    <section class="admin-dashboard-content">
+      <div class="admin-dashboard-apps" id="dashboard-apps">
+        <div class="admin-section-heading">
+          <div>
+            <span>Gestion</span>
+            <h3>Applications</h3>
+          </div>
+          <i class="fas fa-th-large"></i>
+        </div>
+        {% if app_list %}
+          <div class="admin-module-grid">
+            {% for app in app_list %}
+              <article class="admin-module-card">
+                <header>
+                  <div>
+                    <span class="admin-module-eyebrow">{{ app.models|length }} modèles</span>
+                    <h4><a href="{{ app.app_url }}">{{ app.name }}</a></h4>
+                  </div>
+                  <i class="fas fa-folder-open"></i>
+                </header>
+                <ul class="admin-module-list">
+                  {% for model in app.models %}
+                    <li>
+                      <a href="{{ model.admin_url|default:'#' }}">{{ model.name }}</a>
+                      <span>
+                        {% if model.add_url %}
+                          <a href="{{ model.add_url }}" title="Ajouter"><i class="fas fa-plus"></i></a>
+                        {% endif %}
+                        {% if model.admin_url %}
+                          <a href="{{ model.admin_url }}" title="Voir"><i class="fas fa-arrow-right"></i></a>
+                        {% endif %}
+                      </span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="admin-empty-state">Aucune application disponible.</p>
+        {% endif %}
+      </div>
+
+      <aside class="admin-dashboard-activity" id="dashboard-activity">
+        <div class="admin-section-heading">
+          <div>
+            <span>Journal</span>
+            <h3>Activité récente</h3>
+          </div>
+          <i class="fas fa-clock"></i>
+        </div>
+        {% get_admin_log 6 as admin_log for_user user %}
+        {% if admin_log %}
+          <div class="admin-activity-list">
+            {% for entry in admin_log %}
+              <article class="admin-activity-item">
+                <span class="admin-activity-icon {% if entry.is_addition %}is-add{% elif entry.is_change %}is-change{% elif entry.is_deletion %}is-delete{% endif %}">
+                  {% if entry.is_addition %}
+                    <i class="fas fa-plus"></i>
+                  {% elif entry.is_change %}
+                    <i class="fas fa-pen"></i>
+                  {% elif entry.is_deletion %}
+                    <i class="fas fa-trash"></i>
+                  {% else %}
+                    <i class="fas fa-circle"></i>
+                  {% endif %}
+                </span>
+                <div>
+                  {% if entry.get_admin_url and not entry.is_deletion %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                  {% else %}
+                    <strong>{{ entry.object_repr }}</strong>
+                  {% endif %}
+                  <small>Il y a {{ entry.action_time|timesince }}{% if entry.model %} · {{ entry.model|capfirst }}{% endif %}</small>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="admin-empty-state">Aucune activité récente.</p>
+        {% endif %}
+      </aside>
+    </section>
+  </div>
+{% endblock %}

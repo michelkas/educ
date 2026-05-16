@@ -1,0 +1,348 @@
+/* ========================================
+   Django Admin Forms - Dark Theme
+   Enhanced Checkboxes, Radio Buttons & Selects
+   ======================================== */
+
+:root {
+    --admin-dark: #1e1e2e;
+    --admin-darker: #0f0f1e;
+    --admin-secondary: #2d2d3d;
+    --admin-accent: #6366f1;
+    --admin-accent-hover: #818cf8;
+    --admin-text: #e4e4e7;
+    --admin-text-light: #a1a1aa;
+    --admin-border: #3d3d4d;
+}
+
+/* ========================================
+   Checkbox Container (django-admin inline)
+   ======================================== */
+
+.inline-related .fieldset > legend {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: var(--admin-accent);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Inline checkbox styling for model inline admin */
+.inline-group .inline-related .fieldset {
+    background-color: var(--admin-secondary);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.5rem;
+}
+
+/* ========================================
+   File Input Styling
+   ======================================== */
+
+.form-control[type="file"] {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.form-control[type="file"]::file-selector-button {
+    background-color: var(--admin-accent);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
+}
+
+.form-control[type="file"]::file-selector-button:hover {
+    background-color: var(--admin-accent-hover);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* ========================================
+   Multiple Select & Checkboxes
+   ======================================== */
+
+.admin-autocomplete-light ul,
+.admin-autocomplete-light ul li {
+    background-color: var(--admin-secondary);
+    color: var(--admin-text);
+    border-color: var(--admin-border);
+}
+
+.admin-autocomplete-light ul li.choice.selected {
+    background-color: rgba(99, 102, 241, 0.2);
+}
+
+/* ========================================
+   DateTime Picker
+   ======================================== */
+
+.datetimeshortcuts {
+    margin-top: 0.5rem;
+}
+
+.datetimeshortcuts > a {
+    background-color: var(--admin-accent);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    margin-right: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.datetimeshortcuts > a:hover {
+    background-color: var(--admin-accent-hover);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* ========================================
+   Help Text Styling
+   ======================================== */
+
+.help-text,
+p.help {
+    color: var(--admin-text-light);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* ========================================
+   Error Messages
+   ======================================== */
+
+.errorlist {
+    background-color: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    list-style: none;
+}
+
+.errorlist li {
+    color: #fca5a5;
+    padding: 0.25rem 0;
+}
+
+.errorlist li:before {
+    content: "⚠ ";
+    margin-right: 0.5rem;
+}
+
+/* Errors on fields */
+.errors {
+    color: #fca5a5;
+    font-size: 0.875rem;
+}
+
+/* ========================================
+   Select Multiple Styling (for many checkboxes)
+   ======================================== */
+
+.admin-dl-horizontal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-dl-horizontal dt {
+    grid-column: 1;
+}
+
+.admin-dl-horizontal dd {
+    grid-column: 2;
+}
+
+/* Filter sidebar in changelist */
+#changelist-filter {
+    background-color: var(--admin-secondary);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.5rem;
+}
+
+#changelist-filter h3 {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: var(--admin-accent);
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--admin-border);
+    margin-top: 0;
+}
+
+#changelist-filter > ul li a {
+    color: var(--admin-text-light);
+    transition: all 0.2s ease;
+}
+
+#changelist-filter > ul li a:hover {
+    color: var(--admin-accent);
+    background-color: rgba(99, 102, 241, 0.1);
+    border-left: 3px solid var(--admin-accent);
+    padding-left: 0.5rem;
+}
+
+/* ========================================
+   Django ReadOnly Input
+   ======================================== */
+
+.readonly {
+    padding: 0.75rem;
+    color: var(--admin-text-light);
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.25rem;
+    display: inline-block;
+    min-width: 100%;
+}
+
+/* ========================================
+   Tabular Inline Styling
+   ======================================== */
+
+.tabular tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.tabular tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+}
+
+.tabular .delete input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* ========================================
+   Stacked Inline Styling
+   ======================================== */
+
+.wide {
+    width: 100%;
+}
+
+.wide input,
+.wide select,
+.wide textarea {
+    max-width: 100%;
+}
+
+/* ========================================
+   Submit Row (Save buttons)
+   ======================================== */
+
+.submit-row {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--admin-border);
+    border-radius: 0 0 0.5rem 0.5rem;
+    margin-top: 2rem;
+}
+
+.submit-row input[type="submit"] {
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.submit-row input[type="submit"].default {
+    background-color: var(--admin-accent);
+    color: white;
+}
+
+.submit-row input[type="submit"].default:hover {
+    background-color: var(--admin-accent-hover);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.submit-row input[type="submit"].delete-button {
+    background-color: #ef4444;
+    color: white;
+}
+
+.submit-row input[type="submit"].delete-button:hover {
+    background-color: #dc2626;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* ========================================
+   Fieldset Collapse/Expand (Collapse Toggle)
+   ======================================== */
+
+.collapse-toggle {
+    cursor: pointer;
+    color: var(--admin-accent);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.collapse-toggle:hover {
+    color: var(--admin-accent-hover);
+}
+
+/* ========================================
+   Radio & Checkbox in Lists
+   ======================================== */
+
+ul.radiolist,
+ul.checkboxlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+}
+
+ul.radiolist li,
+ul.checkboxlist li {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+}
+
+ul.radiolist li label,
+ul.checkboxlist li label {
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+ul.radiolist li input[type="radio"],
+ul.checkboxlist li input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+/* ========================================
+   Responsive Mobile Adjustments
+   ======================================== */
+
+@media (max-width: 768px) {
+    .admin-dl-horizontal {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-dl-horizontal dt {
+        grid-column: 1;
+    }
+
+    .admin-dl-horizontal dd {
+        grid-column: 1;
+    }
+
+    .submit-row {
+        flex-direction: column;
+    }
+
+    .submit-row input[type="submit"] {
+        width: 100%;
+    }
+}

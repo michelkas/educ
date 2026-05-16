@@ -146,44 +146,68 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 JAZZMIN_SETTINGS = {
-    "theme": "darkly",  # Mode sombre par défaut (Jazzmin)
-    "dark_mode_theme": "darkly",  # Thème sombre (fallback)
+    # -- Thème sombre fluide --
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+    "use_google_fonts_cdn": True,
 
     # -- Titres et marques --
-    "site_title": "Administration",       # Titre de la fenêtre du navigateur
-    "site_header": "Administration", # Titre sur l'écran de connexion
-    "site_brand": "Admin",             # Titre dans la barre de navigation
-    "welcome_sign": "Bienvenue dans l'administration",
+    "site_title": "Administration While Educ",
+    "site_header": "Panneau d'administration",
+    "site_brand": "While Educ Admin",
+    "welcome_sign": "Bienvenue dans l'administration While Educ",
 
-    # -- Logos et icônes (chemins dans vos fichiers statiques) --
-    # Note: Jazzmin attend typiquement un chemin relatif à STATICFILES (donc sans "static/")
-    # D'après le repo, les assets sont dans: static/assets/img/
-    "site_logo": "assets/img/log.png",    # Logo dans la barre de navigation
-    "login_logo": "None", # Logo sur la page de connexion
-    "site_icon": "assets/img/favicon.png", # Favicon
+    # -- Logos et icônes --
+    "site_logo": "assets/img/log.png",
+    "login_logo": None,
+    "site_icon": "assets/img/favicon.png",
 
-
- 
-
-    # -- Menu latéral (Side Menu) --
+    # -- Menu latéral (fluide & responsive) --
     "show_sidebar": True,
-    "navigation_expanded": False, # Menu déroulant par défaut
-    "hide_apps": [],             # Apps à masquer (ex: ["auth"])
-    "hide_models": [],           # Modèles à masquer (ex: ["auth.user"])
-    "order_with_respect_to": ["auth", "monapp"], # Tri des apps/modèles
-    # custom_links: à configurer selon vos vraies vues/permissions.
-    # Retiré ici pour éviter des liens cassés (ex: admin:monapp_rapport inexistant).
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
     "custom_links": {},
 
-
-    # -- Format des formulaires de modification --
-    "changeform_format": "horizontal_tabs",   # Options: "single", "vertical_tabs", "collapsible", "carousel"
+    # -- Format des formulaires --
+    "changeform_format": "vertical_tabs",
     "changeform_format_overrides": {
         "auth.user": "vertical_tabs",
-        "auth.group": "collapsible",
+        "auth.group": "vertical_tabs",
     },
 
-    # -- UI Builder (pour personnaliser l'interface visuellement) --
+    # -- UI & Comportement --
     "show_ui_builder": False,
+    "navigation_in_modal": False,
+    
+    # -- Styles personnalisés --
+    "custom_css": "assets/css/jazzmin-dark-theme.css",
+    "custom_js": None,
+
+    # -- Améliorations visuelles --
+    "show_search_bar": True,
+    "search_model": ["auth.user"],
+    "toasts_position": "top-right",
+    
+    # -- Paramètres de l'en-tête --
+    "header_date_format": "D d M Y",
+    "header_time_format": "H:i",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    "default_theme_mode": "dark",
+    "navbar": "navbar-dark",
+    "sidebar": "sidebar-dark-primary",
+    "accent": "accent-success",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
 }

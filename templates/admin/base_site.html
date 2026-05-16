@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'assets/css/jazzmin-dark-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/admin-forms-dark.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/jazzmin-animations.css' %}">
+    <style>
+        /* ========================================
+           Additional Jazzmin Customizations
+           ======================================== */
+
+        :root {
+            --primary-dark: #343a40;
+            --primary-darker: #272d33;
+            --secondary-dark: #2f363d;
+            --surface-dark: #252b31;
+            --accent-color: #00bc8c;
+            --accent-hover: #15d6a8;
+            --link-color: #7dd3fc;
+            --text-light: #f8fafc;
+            --text-lighter: #c7d0d9;
+            --border-color: #49515a;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Enhanced focus states for accessibility */
+        *:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+
+        /* Smooth transitions on all interactive elements */
+        button, a, input, select, textarea, [role="button"] {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Ensure dark mode is properly applied */
+        body {
+            background-color: var(--primary-dark) !important;
+            color: var(--text-light) !important;
+        }
+
+        /* Fix for potential light mode overrides */
+        .jazzmin-light-mode,
+        [data-theme="light"] {
+            display: none !important;
+        }
+    </style>
+{% endblock %}

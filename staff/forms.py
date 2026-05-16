@@ -20,26 +20,28 @@ class StaffForm(forms.ModelForm):
         labels = {
             'name': 'Nom',
             'surname': 'Post-Nom',
-            'firstname': 'Prenom',
+            'firstname': 'Prénom',
             'sexe': 'Sexe',
             'title':'Titre',
             'role': 'Rôle',
             'degree': 'Niveau d\'étude',
             'faculty': 'Domaine d\'étude',
             'date_birthday': 'Date de naissance',
-            'admin':'Fait parti de l\'administration'
+            'admin': 'Fait partie de l\'administration'
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'surname': forms.TextInput(attrs={'class': 'form-control'}),
             'firstname': forms.TextInput(attrs={'class': 'form-control'}),
-            'sexe': forms.RadioSelect(attrs={'class': 'form-control'}),
-            'role': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
-            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'place_of_birth': forms.TextInput(attrs={'class': 'form-control'}),
-            'admin': forms.CheckboxInput(attrs={'class': 'form-control'}),
-    
-        
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'contact': forms.TextInput(attrs={'class': 'form-control'}),
+            'title': forms.Select(attrs={'class': 'form-control'}),
+            'sexe': forms.RadioSelect(attrs={'class': 'choice-list choice-list-radio'}),
+            'role': forms.CheckboxSelectMultiple(attrs={'class': 'choice-list choice-list-checkbox'}),
+            'degree': forms.TextInput(attrs={'class': 'form-control'}),
+            'faculty': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_birthday': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'admin': forms.CheckboxInput(attrs={'class': 'admin-toggle'}),
         }
         
     def clean(self):
@@ -65,6 +67,5 @@ class DeanForm(forms.ModelForm):
         }
         
         widgets = {
-          'course': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
-           
+            'course': forms.CheckboxSelectMultiple(attrs={'class': 'choice-list choice-list-checkbox'}),
         }
