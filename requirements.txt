@@ -1,0 +1,5 @@
+Django>=6.0,<7.0
+djangorestframework
+django-phonenumber-field
+django-tinymce
+Pillow
