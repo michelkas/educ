@@ -158,7 +158,7 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Bienvenue dans l'administration While Educ",
 
     # -- Logos et icônes --
-    "site_logo": "assets/img/log.png",
+    "site_logo": "assets/img/favicon.png",
     "login_logo": None,
     "site_icon": "assets/img/favicon.png",
 

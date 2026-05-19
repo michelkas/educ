@@ -11,16 +11,15 @@ def create_user_and_matricule(sender, instance, created, **kwargs):
     #sauvegarde automatique du matricule et creation
         if not instance.matricule:
             id_stf = str(instance.id)
-            nm = instance.name[:1].upper() if instance.name else 'X'
             tmz = timezone.now()
             
-            instance.matricule =  f"{timezone.now().year}0{id_stf}-{nm}"
+            instance.matricule =  f"{timezone.now().year}{instance.option.code if instance.option else '000'}{id_stf.zfill(3)}" #ex : 2024001001
             instance.save(update_fields=["matricule"]) 
             
         if not instance.user:
             username = instance.matricule
             tmz = timezone.now()
-            password = instance.name.lower() + instance.date_birthday.strftime("%Y") if instance.date_birthday else tmz.strftime("%Y")
+            password = instance.name.upper() + instance.date_birthday.strftime("%Y") if instance.date_birthday else tmz.strftime("%Y") #ex : DOE2000 ou DOE2024 si date_birthday est null
             user = User.objects.create_user(
                     username=username,
                     password=password,

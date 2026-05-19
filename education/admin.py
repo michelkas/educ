@@ -24,9 +24,9 @@ class OptionsAdmin(admin.ModelAdmin):
     Administration des options.
     """
     form = OptionsForm
-    list_display = ['name', 'formatted_created_at', 'formatted_updated_at']
-    search_fields = ['name']
-    ordering = ['name']
+    list_display = ['name', "code",'formatted_created_at', 'formatted_updated_at']
+    search_fields = ['name', 'code']
+    ordering = ['name', 'code']
      
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
