@@ -19,7 +19,9 @@ class ProfilesForm(forms.ModelForm):
                     }),
             'bio':forms.Textarea(attrs={
                     'class':'form-control',
-                    'placeholder':'identifiez-vous dans 120 lettres'
+                    'placeholder':'Exemple: Enseignant de mathematiques, disponible pour le suivi pedagogique.',
+                    'rows':4,
+                    'maxlength':120
                     
                     })
         }

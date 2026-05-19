@@ -1,49 +1,128 @@
 {% extends "base.html" %}
 
+{% block title %}Edition du profil{% endblock %}
+
 {% block content %}
+    {% include "profiles/_profile_styles.html" %}
 
-    <main class="bg-light">
-        <div class="container">
-            <div class="row justify-content-center mt-5">
-                <div class="col-md-6">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <a href="javascript:history.back()" class="d-flex align-items-center position-absolute">  <i class="bi bi-arrow-left text-primary fs-5"></i></a>
-                            <h3 class="card-title text-center mb-4">Edition profile</h3>
+    <header id="header" class="header profile-topbar d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+            <a href="javascript:history.back()" class="profile-back-link" aria-label="Retour">
+                <i class="bi bi-arrow-left"></i>
+            </a>
 
-                            <!-- Formulaire -->
-                        
-                            <form method="POST"  enctype='multipart/form-data'>
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    {% if profile %}
+                        {% if students %}
+                            <li><a href="{% url 'accounts:profile_students' profile.user.id %}">Voir le profil</a></li>
+                        {% else %}
+                            <li><a href="{% url 'accounts:profile' profile.user.id %}">Voir le profil</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+        </div>
+    </header>
 
-                        
-                            
-                                
-                                {% csrf_token %}
-                                <div class="mb-3">
-                                    {% if form.instance.avatar %}
-                                        <img src="{{form.instance.avatar.url}} " alt="avatar" class="rounded-circle border border-white " style="width:120px; bottom:-60px; left:20px;">
-                                    {% endif %}
-                                </div>
-                                <div class="mb-3">                          
-                                    {{ form.avatar}} 
-                                </div>
-                                <div class="mb-3">                          
-                                    {{ form.bio}} 
-                                </div>
-                                
-                                <div class="d-grid ">
-                                    <button type="submit" class="btn btn-outline-primary">sauvegarder</button>
-                                </div>
-                            </form>
-
-                            
+    <main class="profile-page edit-profile-page">
+        <section class="container profile-shell">
+            <div class="profile-panel edit-profile-panel">
+                <div class="profile-cover"></div>
+                <div class="edit-profile-grid">
+                    <aside class="edit-preview-card">
+                        <div class="edit-avatar">
+                            {% if form.instance.avatar %}
+                                <img src="{{ form.instance.avatar.url }}" alt="Photo actuelle">
+                            {% else %}
+                                <i class="bi bi-person"></i>
+                            {% endif %}
                         </div>
-                    </div>
+
+                        <span class="profile-eyebrow">Edition du profil</span>
+                        <h1 class="edit-title">
+                            {% if staff %}
+                                {{ staff.title|default:"" }} {{ staff.name|capfirst }} {{ staff.surname|capfirst }} {{ staff.firstname|capfirst }}
+                            {% elif students %}
+                                {{ students.name|capfirst }} {{ students.surname|capfirst }} {{ students.first_name|capfirst }}
+                            {% elif profile.user.first_name and profile.user.last_name %}
+                                {{ profile.user.first_name|capfirst }} {{ profile.user.last_name|capfirst }}
+                            {% else %}
+                                {{ profile.user.username|capfirst }}
+                            {% endif %}
+                        </h1>
+                        <p class="profile-muted">
+                            {% if staff %}
+                                {{ staff.role.all|join:", "|default:"Membre du personnel" }}
+                            {% elif students %}
+                                {{ students.classe|default:"Eleve" }}{% if students.option %} - {{ students.option }}{% elif students.section %} - {{ students.section }}{% endif %}
+                            {% else %}
+                                Profil utilisateur
+                            {% endif %}
+                        </p>
+
+                        <div class="edit-preview-note">
+                            <i class="bi bi-stars"></i>
+                            <span>Une photo nette et une bio courte rendent le dossier plus clair pour l'administration et les visiteurs autorises.</span>
+                        </div>
+                    </aside>
+
+                    <article class="edit-form-card">
+                        <div class="section-heading edit-heading">
+                            <div>
+                                <span class="profile-eyebrow">Informations visibles</span>
+                                <h2>Modifier la photo et la presentation</h2>
+                            </div>
+                        </div>
+
+                        <form method="POST" enctype="multipart/form-data" class="edit-profile-form">
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+                                <div class="form-alert">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+
+                            <div class="profile-form-field">
+                                <label for="{{ form.avatar.id_for_label }}">Photo de profil</label>
+                                {{ form.avatar }}
+                                {% if form.avatar.errors %}
+                                    <div class="field-error">{{ form.avatar.errors }}</div>
+                                {% endif %}
+                                <small>Utilise une image claire, centree sur le visage ou le logo du compte.</small>
+                            </div>
+
+                            <div class="profile-form-field">
+                                <label for="{{ form.bio.id_for_label }}">Presentation courte</label>
+                                {{ form.bio }}
+                                {% if form.bio.errors %}
+                                    <div class="field-error">{{ form.bio.errors }}</div>
+                                {% endif %}
+                                <small>120 caracteres maximum. Exemple: fonction, specialite, disponibilite ou mission.</small>
+                            </div>
+
+                            <div class="profile-form-actions">
+                                <button type="submit" class="profile-action primary">
+                                    <i class="bi bi-check2-circle"></i> Sauvegarder
+                                </button>
+                                {% if students %}
+                                    <a href="{% url 'accounts:profile_students' profile.user.id %}" class="profile-action neutral">
+                                        <i class="bi bi-x-circle"></i> Annuler
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'accounts:profile' profile.user.id %}" class="profile-action neutral">
+                                        <i class="bi bi-x-circle"></i> Annuler
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </article>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
-{% endblock  %}
-
+{% endblock %}
 

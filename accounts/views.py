@@ -77,13 +77,16 @@ def profile(request, user_id):
     except Profiles.DoesNotExist:
         profile = None    
         
-    try:
-        caisse = Staff.objects.filter(role__name = 'caisse').exists()
-    except Staff.DoesNotExist:
-        caisse = None 
+    caisse = staff.role.filter(name__iexact='caisse').exists() if staff is not None else False
         
     if staff is not None:
-       cours = Courses.objects.only('id').filter(professor_id=staff.id)
+       cours = (
+           Courses.objects
+           .filter(professor=staff)
+           .select_related('section', 'option')
+           .prefetch_related('course', 'classe')
+           .order_by('section__name', 'option__name', 'id')
+       )
     else:
         cours=[]
    
@@ -106,16 +109,20 @@ def edit_profile(request, user_id):
     Returns:
         HttpResponse: Page d'édition du profil ou redirection après modification.
     """
-    profile = Profiles.objects.get(user_id=user_id)
+    profile = get_object_or_404(Profiles, user_id=user_id)
+    staff = Staff.objects.filter(user_id=user_id).prefetch_related('role').first()
+    students = Students.objects.filter(user_id=user_id).select_related('classe', 'section', 'option').first()
     if request.method == 'POST':
         form = ProfilesForm(request.POST, request.FILES, instance= profile)
         
         if form.is_valid():
             form.save()
+            if students is not None:
+                return redirect('accounts:profile_students', user_id = user_id)
             return redirect('accounts:profile', user_id = user_id)
     else:
         form = ProfilesForm(instance=profile)
-    return render(request, 'profiles/edit.html', {'form':form})
+    return render(request, 'profiles/edit.html', {'form':form, 'profile':profile, 'staff':staff, 'students':students})
 
 def logout_view(request):
     """
@@ -152,11 +159,10 @@ def profile_students(request, user_id):
  
     today = date.today()
     
-    paiements = None
-    try:
+    if students is not None:
         paiements = Box.objects.filter(student__id=students.id)# Récupérer tous les paiements de l'élève
-    except Box.DoesNotExist:
-        paiements = None
+    else:
+        paiements = Box.objects.none()
         
     # Regrouper par frais et mois
     groupe_frais = defaultdict(lambda: defaultdict(list))
@@ -213,7 +219,10 @@ def profile_students(request, user_id):
         "contacts": Contact.objects.all()[:1],
         'profile':profile,
         'students':students, 
-        'age': today.year - students.date_birthday.year if students.date_birthday  else '-' 
+        'age': (
+            today.year - students.date_birthday.year -
+            ((today.month, today.day) < (students.date_birthday.month, students.date_birthday.day))
+        ) if students and students.date_birthday else '-' 
     }
  
     return render(request, "profiles/profile_students.html", context)

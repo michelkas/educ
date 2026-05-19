@@ -1,125 +1,249 @@
 {% extends "base.html" %}
+
+{% block title %}Profil du personnel{% endblock %}
+
 {% block content %}
+  {% include "profiles/_profile_styles.html" %}
 
-    <header id="header" class="header d-flex align-items-center fixed-top">
-      <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+  <header id="header" class="header profile-topbar d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="{% url 'general:index' %}" class="profile-back-link" aria-label="Retour a l'accueil">
+        <i class="bi bi-arrow-left"></i>
+      </a>
 
-        <a href="{% url "general:index" %}" class="logo d-flex align-items-center">
-          <!-- Uncomment the line below if you also wish to use an image logo -->
-          <!-- <img src="assets/img/logo.webp" alt=""> -->
-          <i class="bi bi-arrow-left text-warning fs-5"></i>
-      
-        </a>
-        {% if user.is_authenticated and user.id == profile.id %}
-              <nav id="navmenu" class="navmenu">
-                <ul>
-                  {% if staff %}
-                    {% if user.is_authenticated and user.id == profile.id and caisse   %}
-                        <li><a href="{% url "finance:index_finance" %}">caisse </a></li>
-                    {% endif %}
-                  {% endif %}
-                      <li><a href="{% url "accounts:logout" %}" class="text-danger">Deconnexion</a></li>
-                      {% if is_staff or user.is_superuser %}  <li><a href="{% url "admin:index" %}">Configuration</a></li>{% endif %}
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list auto"></i>
-              </nav>
-              {% else %}
-
-        {% endif %}
-      </div>
-    </header>
-
-    <div class="container-fluid p-0 position-relative">
-    <div class="page-title dark-background" style="max-height:20px; background: black;" ></div>
-    {% if profile %}
-      <img src="{{profile.avatar.url}}" alt="Avatar" class="rounded-circle border border-white position-absolute" style="width:120px; bottom:-60px; left:20px;">
-    {% endif %}
-    </div>
-
-    <!-- Info utilisateur -->
-    <section class="container  ms-auto mt-auto">
-      <div class="d-flex justify-content-between align-items-start "  >
-        <div>
-          {% if staff %}
-            <h2 class="mb-1"> {{ staff.title|capfirst }} {{ staff.name|capfirst }} {{ staff.firstname|capfirst }}</h2>
-            <h6 class="text-muted ">  <span class="bi bi-mortarboard"></span> {{staff.degree|capfirst }}  en  {{staff.faculty|capfirst }}</h6>
-            <h6 class="text-muted ">  <span class="bi bi-briefcase"></span> {{staff.role.all|join:", "}} </h6>
-            {% else %}
-                {% if user.first_name and user.last_name  %}
-                  <h2 class="mb-1"> {{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h2>
-                  {% else %}
-                    <h2 class="mb-1"> {{ user.username|capfirst }} </h2>
-                {% endif %}
-
+      {% if profile and user.is_authenticated and user.id == profile.user.id %}
+        <nav id="navmenu" class="navmenu" style="color:blank;">
+          <ul>
+            {% if staff and caisse %}
+              <li><a href="{% url 'finance:index_finance' %}">Caisse</a></li>
             {% endif %}
-
-        </div>
-        <div>
-          {% if user.is_authenticated and user.id == profile.id %}
-        <a href="{% url "accounts:edit_profile" user.id %}" class="btn btn-outline-secondary me-2" >Modifier le profil</a>
-          {% endif %}
-        </div>
-      
-      </div>
-      {% if profile %}
-      <p class="mt-2" > {% if profile.bio %}{{profile.bio}}{% endif %}</p>
+            {% if user.is_staff or user.is_superuser %}
+              <li><a href="{% url 'admin:index' %}">Configuration</a></li>
+            {% endif %}
+            <li><a href="{% url 'accounts:logout' %}" class="text-danger">Deconnexion</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
       {% endif %}
+    </div>
+  </header>
 
-      <!-- Statistiques -->
-      
-
-      <!-- Onglets -->
-    
-
-    
-      {% if staff %}
-        {% if cours %}
-          <div class="row">
-            <div class="col-lg-3" data-aos="fade-up" data-aos-delay="300">
-              <div class="departments-nav">
-                
-                  <ul class="nav nav-tabs">
-                  <li class="nav-item" ><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#faculty--staff-tab-1">Attribution de cours</button></li>
-                  </ul>
-              </div>
+  <main class="profile-page">
+    <section class="container profile-shell">
+      <div class="profile-panel profile-hero">
+        <div class="profile-cover"></div>
+        <div class="profile-hero-body">
+          <div class="profile-identity">
+            <div class="profile-photo">
+              {% if profile and profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Photo de profil">
+              {% else %}
+                <i class="bi bi-person"></i>
+              {% endif %}
             </div>
 
-            <div class="cards" data-aos="fade-up" data-aos-delay="400">
-              <div class="tab-content">
+            <div>
+              <span class="profile-eyebrow">Profil du personnel</span>
+              {% if staff %}
+                <h1 class="profile-name">
+                  {{ staff.title|default:""|capfirst }} {{ staff.name|capfirst }} {{ staff.surname|capfirst }} {{ staff.firstname|capfirst }}
+                </h1>
+                <p class="profile-subtitle">
+                  {{ staff.degree|default:"Professionnel de l'education"|capfirst }}
+                  {% if staff.faculty %} en {{ staff.faculty|capfirst }}{% endif %}
+                </p>
+              {% else %}
+                <h1 class="profile-name">
+                  {% if profile.user.first_name and profile.user.last_name %}
+                    {{ profile.user.first_name|capfirst }} {{ profile.user.last_name|capfirst }}
+                  {% else %}
+                    {{ profile.user.username|default:user.username|capfirst }}
+                  {% endif %}
+                </h1>
+                <p class="profile-subtitle">Compte utilisateur de l'etablissement</p>
+              {% endif %}
 
-                <div class="tab-pane fade  show active " id="faculty--staff-tab-1">
-                  <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                      <div class="faculty-card">
-                      
+              <div class="profile-badges">
+                {% if staff %}
+                  <span class="profile-badge success"><i class="bi bi-briefcase"></i>{{ staff.role.all|join:", "|default:"Membre du personnel" }}</span>
+                  <span class="profile-badge"><i class="bi bi-person-badge"></i>{{ staff.matricule|default:"Matricule non renseigne" }}</span>
+                {% else %}
+                  <span class="profile-badge success"><i class="bi bi-person-check"></i>Profil actif</span>
+                {% endif %}
+              </div>
 
-                          {% for cour in cours  %}
-                            <div class="faculty-info">
-                              <div class="faculty-specialties">
-                                        <p class="faculty-title"> {{cour.course.all|join:", "|capfirst}} --- <span> {{cour.classe.all|join:", "|capfirst}} </span>  --- <span> {{cour.section|capfirst}} </span> --- <span> {% if cour.option %}{{cour.option|capfirst}} {% endif %} </span>  </p>
-                              </div>
-                            </div>
-                          {% endfor %} 
-                        
-                        
-                      </div>
-                    </div>
-                  </div>
+              {% if profile and user.is_authenticated and user.id == profile.user.id %}
+                <div class="profile-actions">
+                  <a href="{% url 'accounts:edit_profile' profile.user.id %}" class="profile-action primary">
+                    <i class="bi bi-pencil-square"></i> Modifier le profil
+                  </a>
+                  {% if staff and caisse %}
+                    <a href="{% url 'finance:index_finance' %}" class="profile-action secondary">
+                      <i class="bi bi-cash-coin"></i> Ouvrir la caisse
+                    </a>
+                  {% endif %}
+                  <a href="{% url 'accounts:logout' %}" class="profile-action danger">
+                    <i class="bi bi-box-arrow-right"></i> Deconnexion
+                  </a>
                 </div>
-
-              </div>
+              {% endif %}
             </div>
-            
           </div>
 
-        
-        {% endif %}
-      {% endif %}
-  
+          <aside class="profile-summary-card">
+            <div class="profile-summary-grid">
+              <div class="profile-summary-item">
+                <span class="profile-label">Statut</span>
+                <span class="profile-value">{% if staff and staff.admin %}Administrateur{% elif staff %}Personnel academique{% else %}Utilisateur{% endif %}</span>
+              </div>
+              <div class="profile-summary-item">
+                <span class="profile-label">Email</span>
+                <span class="profile-value">{% if staff and staff.email %}{{ staff.email }}{% elif profile.user.email %}{{ profile.user.email }}{% else %}Non renseigne{% endif %}</span>
+              </div>
+              <div class="profile-summary-item">
+                <span class="profile-label">Telephone</span>
+                <span class="profile-value">{% if staff and staff.contact %}{{ staff.contact }}{% else %}Non renseigne{% endif %}</span>
+              </div>
+              <div class="profile-summary-item">
+                <span class="profile-label">Derniere connexion</span>
+                <span class="profile-value">{% if profile %}{{ profile.formatted_updated_at }}{% else %}Jamais{% endif %}</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="profile-main-stack">
+        <div class="profile-content-grid">
+          <article class="profile-info-card">
+            <h2 class="profile-card-title">Informations professionnelles</h2>
+            <div class="profile-detail-list">
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-mortarboard"></i></span>
+                <div>
+                  <span class="profile-label">Niveau d'etude</span>
+                  <div class="profile-value">{% if staff and staff.degree %}{{ staff.degree|capfirst }}{% else %}Non renseigne{% endif %}</div>
+                </div>
+              </div>
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-diagram-3"></i></span>
+                <div>
+                  <span class="profile-label">Domaine</span>
+                  <div class="profile-value">{% if staff and staff.faculty %}{{ staff.faculty|capfirst }}{% else %}Non renseigne{% endif %}</div>
+                </div>
+              </div>
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-award"></i></span>
+                <div>
+                  <span class="profile-label">Role</span>
+                  <div class="profile-value">{% if staff %}{{ staff.role.all|join:", "|default:"Membre du personnel" }}{% else %}Non renseigne{% endif %}</div>
+                </div>
+              </div>
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-calendar3"></i></span>
+                <div>
+                  <span class="profile-label">Date de naissance</span>
+                  <div class="profile-value">{% if staff and staff.date_birthday %}{{ staff.date_birthday|date:"d F Y" }}{% else %}Non renseignee{% endif %}</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="profile-info-card">
+            <h2 class="profile-card-title">Presentation</h2>
+            <p class="profile-bio">
+              {% if profile and profile.bio %}
+                {{ profile.bio }}
+              {% elif staff %}
+                {{ staff.title|default:"" }} {{ staff.name|capfirst }} {{ staff.firstname|capfirst }} accompagne l'etablissement avec rigueur, disponibilite et sens du service.
+              {% else %}
+                Profil utilisateur rattache a l'etablissement, disponible pour les operations autorisees par son compte.
+              {% endif %}
+            </p>
+          </article>
+
+          <article class="profile-info-card">
+            <h2 class="profile-card-title">Coordonnees</h2>
+            <div class="profile-detail-list">
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-envelope"></i></span>
+                <div>
+                  <span class="profile-label">Adresse email</span>
+                  <div class="profile-value">{% if staff and staff.email %}{{ staff.email }}{% elif profile.user.email %}{{ profile.user.email }}{% else %}Non renseignee{% endif %}</div>
+                </div>
+              </div>
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-telephone"></i></span>
+                <div>
+                  <span class="profile-label">Contact</span>
+                  <div class="profile-value">{% if staff and staff.contact %}{{ staff.contact }}{% else %}Non renseigne{% endif %}</div>
+                </div>
+              </div>
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-gender-ambiguous"></i></span>
+                <div>
+                  <span class="profile-label">Sexe</span>
+                  <div class="profile-value">{% if staff and staff.sexe %}{{ staff.sexe|capfirst }}{% else %}Non renseigne{% endif %}</div>
+                </div>
+              </div>
+              <div class="profile-detail">
+                <span class="profile-detail-icon"><i class="bi bi-clock-history"></i></span>
+                <div>
+                  <span class="profile-label">Compte cree</span>
+                  <div class="profile-value">{% if profile %}{{ profile.formatted_created_at }}{% else %}Non renseigne{% endif %}</div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        {% if staff %}
+          <section class="profile-section-panel" id="staff-courses">
+            <div class="section-heading">
+              <div>
+                <span class="profile-eyebrow">Charges academiques</span>
+                <h2>Liste des cours attribues</h2>
+              </div>
+              <span class="mini-chip">{{ cours|length }} attribution(s)</span>
+            </div>
+
+            {% if cours %}
+              <div class="assignment-grid">
+                {% for cour in cours %}
+                  <article class="assignment-card course-card">
+                    <div class="assignment-card-head">
+                      <span class="course-icon"><i class="bi bi-journal-bookmark"></i></span>
+                      <span class="mini-chip">Attribution {{ forloop.counter }}</span>
+                    </div>
+                    <h3>{{ cour.course.all|join:", "|capfirst|default:"Cours non renseigne" }}</h3>
+                    <div class="course-facts">
+                      <div class="course-fact">
+                        <span>Classe</span>
+                        <strong>{{ cour.classe.all|join:", "|capfirst|default:"Classe non renseignee" }}</strong>
+                      </div>
+                      <div class="course-fact">
+                        <span>Section</span>
+                        <strong>{% if cour.section %}{{ cour.section|capfirst }}{% else %}Section non renseignee{% endif %}</strong>
+                      </div>
+                      <div class="course-fact">
+                        <span>Option</span>
+                        <strong>{% if cour.option %}{{ cour.option|capfirst }}{% else %}Non applicable{% endif %}</strong>
+                      </div>
+                    </div>
+                  </article>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="empty-state">
+                <i class="bi bi-info-circle"></i>
+                <span>Aucune attribution de cours n'est encore enregistree pour ce membre du personnel.</span>
+              </div>
+            {% endif %}
           </section>
+        {% endif %}
+      </div>
+    </section>
+  </main>
 
-    
   {% include "includes/foot.html" %}
-
-{% endblock  %}
-
+{% endblock %}
