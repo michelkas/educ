@@ -15,12 +15,14 @@ class SectionForm(forms.ModelForm):
 class OptionsForm(forms.ModelForm):
     class Meta:
         model = Options
-        fields = ['name']
+        fields = ['name', 'code']
         labels = {
             'name': 'Nom de l\'option',
+            'code': 'Code de l\'option',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'code': forms.NumberInput(attrs={'class': 'form-control'}),
         }
         
 class CourseForm(forms.ModelForm):

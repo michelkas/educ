@@ -52,6 +52,7 @@ class Options(models.Model):
     Modèle représentant une option pédagogique (ex : math, biochimie, latin).
     """
     name = models.CharField("Nom d'option",max_length=100, unique=False, null=False, blank=False)
+    code = models.IntegerField("Code d'option", unique=True, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -67,7 +68,7 @@ class Options(models.Model):
         Returns:
             str: Nom de l'option.
         """
-        return self.name
+        return f"{self.name} ({self.code})"
     
     def formatted_created_at(self):
         """
