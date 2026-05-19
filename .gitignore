@@ -6,3 +6,5 @@ JAZZMIN_SETUP_COMPLETE.md
 JAZZMIN_CONFIG.md
 fixture.json
 THEME_PREVIEW.txt
+__pycache__
+*.pyc
