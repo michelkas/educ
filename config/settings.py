@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$xfnk$i7d6!-^l0xz-lhe$c#e2yfr_@wsipfs4*ftk27&79bx5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["whilesolution.pythonanywhere.com"]
 
 ADMIN_SITE_HEADER = "Panneau d'administration"
 ADMIN_SITE_TITLE = "Administration While Educ"
@@ -46,12 +46,12 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'staff',
     'students',
-    'accounts', 
+    'accounts',
     'education',
     'finance',
     'general',
     'tinymce',
-    
+
     #rest_framework
     'rest_framework',
 ]
@@ -78,7 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-               
+
                 'accounts.context_processors.student_context',
                 'general.context_processors.contact_context',
                 'core.context_processors.core_context',
@@ -136,11 +136,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR/'staticfiles'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -181,7 +179,7 @@ JAZZMIN_SETTINGS = {
     # -- UI & Comportement --
     "show_ui_builder": False,
     "navigation_in_modal": False,
-    
+
     # -- Styles personnalisés --
     "custom_css": "assets/css/jazzmin-dark-theme.css",
     "custom_js": None,
@@ -190,7 +188,7 @@ JAZZMIN_SETTINGS = {
     "show_search_bar": True,
     "search_model": ["auth.user"],
     "toasts_position": "top-right",
-    
+
     # -- Paramètres de l'en-tête --
     "header_date_format": "D d M Y",
     "header_time_format": "H:i",
