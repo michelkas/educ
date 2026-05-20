@@ -9,4 +9,6 @@ THEME_PREVIEW.txt
 __pycache__
 *.pyc
 config/settings.py
+db.sqlite3*.pyc
+__pycache__/
 db.sqlite3
