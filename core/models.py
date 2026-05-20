@@ -12,6 +12,10 @@ class Core(models.Model):
     province = models.CharField("Province Educationnelle", max_length= 255, blank=True)
     statut = models.TextField("Statut juridique", blank=True)
     promo = models.CharField("Promoteur de l'école", max_length= 255, blank=True)
+    logo = models.ImageField("Logo de l'école", upload_to='logo/', blank=True, null=True)
+    date_created = models.DateField('Date de création', null=True, blank=True)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'core'

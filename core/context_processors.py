@@ -4,7 +4,7 @@ from staff.models import Staff
 def core_context(request):
     core = None
     try:
-        core = Core.objects.only('official_name').first()
+        core = Core.objects.only('official_name', 'logo').first()
     except Core.DoesNotExist:
         core = 'core'
 

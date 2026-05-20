@@ -8,7 +8,9 @@ class CoreForm(forms.ModelForm):
                    'number', 
                    'province', 
                    'statut',
-                   'promo'
+                   'promo',
+                    'logo',
+                    'date_created',
 
                    ]
      
@@ -17,4 +19,9 @@ class CoreForm(forms.ModelForm):
             'number': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Numero d\'agrement du Minister de l\'Enseignement Primaire, Secondaire et Technique'}),
             'province': forms.TextInput(attrs={'class': 'form-control'}),
             'promo': forms.TextInput(attrs={'class': 'form-control'}),
+            'logo': forms.FileInput(attrs={'class': 'form-control'}),
+            'date_created': forms.DateInput(attrs={'class': 'form-control'}),
+            'statut': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         }
+        
+
