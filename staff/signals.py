@@ -15,12 +15,12 @@ def create_user_and_matricule(sender, instance, created, **kwargs):
             nm = instance.name[:1].upper() if instance.name else 'X' #obtenir la premier lettre du nom
             tmz = timezone.now()
             
-            instance.matricule = f"{tmz.strftime("%y")}0{db_stf}{id_stf}-{nm}" 
-            instance.save(update_fields=["matricule"]) 
+            instance.matricule = f"{tmz.strftime("%Y")}{id_stf.zfill(4)}{db_stf}{nm}"  #le matricule est composez de l'année actuelle ex: 2024, suivi de l'ID de l'employé avec des zéros pour le compléter à 4 chiffres, les deux derniers chiffres de l'année de naissance et la première lettre du nom en majuscule
+            instance.save(update_fields=["matricule"])  #ex: 2024000100X pour un employé né en 2000 et dont le nom commence par X
             
         if not instance.user:
             username = instance.matricule
-            password = instance.name.lower() + instance.date_birthday.strftime("%Y")
+            password = f"{instance.name.lower()}{instance.date_birthday.strftime("%Y") if instance.date_birthday else '0000'}"  #le mot de passe est composez du nom en minuscule suivi de l'année de naissance ex: x2000 pour un employé nommé X et né en 2000
             user = User.objects.create_user(
                     username=username,
                     password=password,
