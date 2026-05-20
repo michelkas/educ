@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$xfnk$i7d6!-^l0xz-lhe$c#e2yfr_@wsipfs4*ftk27&79bx5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["whilesolution.pythonanywhere.come"]
+ALLOWED_HOSTS = []
 
 ADMIN_SITE_HEADER = "Panneau d'administration"
 ADMIN_SITE_TITLE = "Administration While Educ"

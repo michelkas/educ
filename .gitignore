@@ -6,7 +6,7 @@ JAZZMIN_SETUP_COMPLETE.md
 JAZZMIN_CONFIG.md
 fixture.json
 THEME_PREVIEW.txt
-__pycache__
+*__pycache__*
 *.pyc
 config/settings.py
 db.sqlite3*.pyc
@@ -15,3 +15,4 @@ db.sqlite3
 *.pyc
 __pycache__/
 db.sqlite3
+config/settings.py
