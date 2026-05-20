@@ -8,3 +8,4 @@ fixture.json
 THEME_PREVIEW.txt
 __pycache__
 *.pyc
+config/settings.py

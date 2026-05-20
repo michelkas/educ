@@ -8215,3 +8215,669 @@ section,
 # Starter Section Section
 --------------------------------------------------------------*/
 
+/*--------------------------------------------------------------
+# While Educ polish layer
+--------------------------------------------------------------*/
+:root {
+  --school-ink: #102433;
+  --school-muted: #667985;
+  --school-line: #dbe5eb;
+  --school-soft: #f5f8fa;
+  --school-panel: #ffffff;
+  --school-teal: #117a8b;
+  --school-green: #2f9e75;
+  --school-gold: #d69a2d;
+  --school-shadow: 0 14px 34px rgba(16, 36, 51, 0.1);
+  --school-shadow-soft: 0 8px 22px rgba(16, 36, 51, 0.08);
+}
+
+body {
+  background: linear-gradient(180deg, #f4f8fa 0%, #ffffff 42%);
+}
+
+.app-header {
+  --background-color: rgba(12, 27, 39, 0.92);
+  --heading-color: #ffffff;
+  --nav-color: rgba(255, 255, 255, 0.88);
+  --nav-hover-color: #ffffff;
+  min-height: 72px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+}
+
+.scrolled .app-header {
+  --background-color: rgba(12, 27, 39, 0.96);
+}
+
+.app-header .logo {
+  min-width: 0;
+  gap: 10px;
+}
+
+.app-header .logo img {
+  max-height: 44px;
+  margin-right: 0;
+}
+
+.app-header .logo i {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.11);
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.app-header .logo h1,
+.app-header .finance-student {
+  color: #ffffff;
+  font-size: clamp(1rem, 2vw, 1.45rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-header .finance-student {
+  display: grid;
+  gap: 3px;
+}
+
+.app-header .finance-student small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.app-header .nav-cta {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, var(--school-teal), var(--school-green));
+  border-radius: 8px;
+  padding: 10px 16px !important;
+  font-weight: 700 !important;
+}
+
+.app-header .nav-danger {
+  color: #bd2d2d !important;
+  font-weight: 700 !important;
+}
+
+@media (min-width: 1200px) {
+  .app-header .navmenu > ul {
+    gap: 2px;
+  }
+
+  .app-header .navmenu a,
+  .app-header .navmenu a:focus {
+    padding: 18px 10px;
+    color: var(--nav-color);
+    font-size: 0.94rem;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .app-header .navmenu li:hover > a,
+  .app-header .navmenu .active,
+  .app-header .navmenu .active:focus {
+    color: #ffffff;
+  }
+
+  .app-header .navmenu .dropdown ul {
+    min-width: 230px;
+    left: 0;
+    border: 1px solid rgba(16, 36, 51, 0.08);
+    border-radius: 8px;
+    box-shadow: var(--school-shadow);
+  }
+
+  .app-header .navmenu .dropdown ul a {
+    padding: 12px 18px;
+    color: var(--school-ink);
+    white-space: normal;
+  }
+
+  .app-header .navmenu .dropdown:hover > ul,
+  .app-header .navmenu .dropdown:focus-within > ul {
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 1199px) {
+  .app-header .mobile-nav-toggle {
+    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    margin-right: 0;
+    line-height: 1;
+  }
+
+  .app-header .navmenu > ul {
+    position: fixed;
+    inset: 86px 14px 16px 14px;
+    max-height: calc(100dvh - 102px);
+    padding: 10px;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 24px 55px rgba(3, 16, 26, 0.28);
+  }
+
+  .app-header .navmenu a,
+  .app-header .navmenu a:focus {
+    padding: 13px 14px;
+    border-radius: 8px;
+    color: var(--school-ink);
+    white-space: normal;
+  }
+
+  .app-header .navmenu a:hover,
+  .app-header .navmenu .active,
+  .app-header .navmenu .active:focus {
+    background: #eef6f8;
+    color: var(--school-teal);
+  }
+
+  .app-header .navmenu .dropdown ul {
+    position: static;
+    inset: auto;
+    max-height: none;
+    margin: 6px 0 8px 14px;
+    padding: 6px;
+    border-radius: 8px;
+    border-color: var(--school-line);
+    background: #f7fafb;
+    box-shadow: none;
+  }
+
+  .mobile-nav-active .app-header .mobile-nav-toggle {
+    position: fixed;
+    top: 22px;
+    right: 22px;
+    z-index: 10000;
+  }
+
+  .mobile-nav-active .app-header .navmenu {
+    background: rgba(6, 18, 28, 0.72);
+    backdrop-filter: blur(4px);
+  }
+
+  .mobile-nav-active .app-header .navmenu > ul {
+    display: block;
+  }
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding-top: 98px;
+  padding-bottom: 58px;
+}
+
+.page-title {
+  min-height: 360px;
+  display: flex;
+  align-items: flex-end;
+  padding: 170px 0 82px 0;
+  background-color: #0f2433;
+  background-position: center;
+}
+
+.page-title:before {
+  background: linear-gradient(180deg, rgba(10, 22, 33, 0.35), rgba(10, 22, 33, 0.82));
+}
+
+.page-title h1 {
+  color: #ffffff;
+  font-size: clamp(2rem, 5vw, 3.9rem);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.page-title p,
+.page-title .breadcrumbs,
+.page-title .breadcrumbs a,
+.page-title .breadcrumbs .current {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.workspace-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.workspace-heading-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.workspace-eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #e8f5f3;
+  color: #176c5a;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.workspace-heading h2 {
+  margin: 0;
+  color: var(--school-ink);
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.workspace-heading p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--school-muted);
+}
+
+.data-card,
+.form-card,
+.ledger-card,
+.students-table,
+.finance-page .card,
+.events-2 .events-list .event-item,
+.events-2 .sidebar .sidebar-item,
+.academics .programs-content .program-item,
+.leadership .leadership-team .leader-card,
+.faculty--staff .faculty-card,
+.event .event-sidebar .sidebar-widget,
+.contact .contact-info-box,
+.blog-details .article,
+.blog-details .article-wrapper .table-of-contents {
+  border: 1px solid rgba(16, 36, 51, 0.08);
+  border-radius: 8px;
+  box-shadow: var(--school-shadow-soft);
+}
+
+.data-card,
+.form-card,
+.ledger-card,
+.finance-page .card {
+  overflow: hidden;
+}
+
+.form-card .card-header,
+.ledger-card .card-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(135deg, var(--school-teal), var(--school-green));
+  color: #ffffff;
+}
+
+.form-card .card-header h4,
+.ledger-card .card-header h5 {
+  color: #ffffff;
+}
+
+.form-card .card-body,
+.ledger-card .card-body {
+  background: #ffffff;
+}
+
+.form-card-title {
+  margin-bottom: 18px;
+  color: var(--school-ink);
+  font-size: 1.2rem;
+}
+
+.finance-page {
+  background: linear-gradient(180deg, #edf6f7 0%, #f8fbfc 45%, #ffffff 100%);
+}
+
+.finance-metric-card {
+  border: 0;
+  background: linear-gradient(135deg, #0f5f80, #2f9e75) !important;
+}
+
+.finance-metric-card .card-body {
+  min-height: 142px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.finance-metric-card h3 {
+  margin: 0;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 900;
+}
+
+.finance-filters,
+.students-filters {
+  padding: 18px;
+  border: 1px solid var(--school-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--school-shadow-soft);
+  animation: fadeIn 0.35s ease;
+}
+
+.finance-filters label,
+.students-filters label {
+  color: var(--school-ink);
+  font-weight: 700;
+}
+
+.finance-filters select,
+.students-filters select,
+.form-card input,
+.form-card select,
+.form-card textarea {
+  min-height: 44px;
+  border: 1px solid #cddbe3;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: var(--school-ink);
+}
+
+.finance-filters select:focus,
+.students-filters select:focus,
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+  border-color: var(--school-teal);
+  box-shadow: 0 0 0 0.2rem rgba(17, 122, 139, 0.14);
+  outline: 0;
+}
+
+.form-card form p {
+  margin-bottom: 16px;
+}
+
+.form-card form p label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--school-ink);
+  font-weight: 700;
+}
+
+.loader {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(3px);
+}
+
+.loader.active {
+  display: flex;
+}
+
+.loader .spinner {
+  width: 54px;
+  height: 54px;
+  border: 6px solid #e6eef2;
+  border-top: 6px solid var(--school-teal);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.table-responsive {
+  border-radius: 8px;
+}
+
+.app-table,
+.students-table {
+  min-width: 780px;
+  margin-bottom: 0;
+  background: #ffffff;
+}
+
+.app-table thead th,
+.students-table thead th {
+  border: 0;
+  background: #0f3d5f;
+  color: #ffffff;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.app-table td,
+.app-table th,
+.students-table td,
+.students-table th {
+  vertical-align: middle;
+}
+
+.app-table tbody tr,
+.students-table tbody tr {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.app-table tbody tr:hover,
+.students-table tbody tr:hover {
+  background: #eef8f7;
+}
+
+.students-page {
+  background: linear-gradient(180deg, #f1f7f8 0%, #ffffff 52%);
+}
+
+.students-table a {
+  color: var(--school-ink);
+  font-weight: 700;
+}
+
+.students-table a:hover {
+  color: var(--school-teal);
+}
+
+.pagination .page-link,
+.pagination .btn {
+  border-radius: 8px !important;
+  margin: 0 3px;
+  border-color: var(--school-line);
+}
+
+.events-2 .events-list .event-item,
+.academics .programs-content .program-item,
+.leadership .leadership-team .leader-card,
+.faculty--staff .faculty-card,
+.event .event-sidebar .sidebar-widget,
+.contact .contact-info-box {
+  background: #ffffff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.events-2 .events-list .event-item:hover,
+.academics .programs-content .program-item:hover,
+.leadership .leadership-team .leader-card:hover,
+.faculty--staff .faculty-card:hover,
+.contact .contact-info-box:hover {
+  transform: translateY(-4px);
+  border-color: rgba(17, 122, 139, 0.22);
+  box-shadow: var(--school-shadow);
+}
+
+.events-2 .events-list .event-item .event-date,
+.event .event-sidebar .related-event-date {
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--school-teal), var(--school-green));
+}
+
+.events-2 .events-list .event-item .event-date span,
+.event .event-sidebar .related-event-date span {
+  color: #ffffff;
+}
+
+.events-2 .events-list .event-item .event-content .event-meta {
+  gap: 10px 18px;
+}
+
+.events-2 .events-list .event-item .event-content .event-meta p {
+  margin-bottom: 0;
+}
+
+.event .event-image img,
+.blog-details .article-featured-image img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: var(--school-shadow-soft);
+}
+
+.event .event-meta .meta-item {
+  min-height: 72px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.event .organizer-image img {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+}
+
+.leadership .leadership-team .leader-card .leader-image,
+.faculty--staff .faculty-card .faculty-image {
+  aspect-ratio: 4 / 3;
+  background: #e9f0f3;
+}
+
+.leadership .leadership-team .leader-card .leader-image img,
+.faculty--staff .faculty-card .faculty-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.leader-info .bio,
+.faculty--staff .faculty-card .faculty-info .faculty-title {
+  color: var(--school-muted);
+}
+
+.faculty--staff .departments-nav {
+  border-radius: 8px;
+  box-shadow: var(--school-shadow-soft);
+}
+
+.faculty--staff .departments-nav .nav-tabs .nav-link {
+  border-radius: 8px;
+  white-space: normal;
+}
+
+.blog-details .article {
+  padding: clamp(20px, 4vw, 42px);
+  background: #ffffff;
+}
+
+.blog-details .article-wrapper .table-of-contents {
+  background: #f7fafb;
+}
+
+.blog-details .article-header .article-meta .post-info span {
+  border-radius: 8px;
+  background: #eef6f8;
+}
+
+.contact .contact-info-box {
+  height: 100%;
+}
+
+.contact .contact-info-box .icon-box {
+  border-radius: 8px;
+  background: #e7f4f1;
+  color: var(--school-green);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 991px) {
+  .workspace-heading-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .workspace-heading-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .page-title {
+    min-height: 310px;
+    padding: 145px 0 58px 0;
+  }
+
+  .finance-filters,
+  .students-filters {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 575px) {
+  .app-header {
+    min-height: 66px;
+  }
+
+  .app-header .logo img {
+    max-height: 38px;
+  }
+
+  .app-header .logo h1,
+  .app-header .finance-student {
+    max-width: 62vw;
+    font-size: 0.95rem;
+  }
+
+  .app-shell {
+    padding-top: 82px;
+  }
+
+  .app-header .navmenu > ul {
+    inset: 76px 10px 12px 10px;
+    max-height: calc(100dvh - 88px);
+  }
+
+  .page-title {
+    min-height: 280px;
+    padding: 124px 0 48px 0;
+  }
+
+  .events-2 .events-list .event-item {
+    gap: 14px;
+  }
+
+  .event .event-meta .meta-item {
+    min-height: auto;
+  }
+}

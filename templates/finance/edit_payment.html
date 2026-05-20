@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container mt-4">
-        <h2>Modifier le paiement</h2>
+    {% include "includes/nav_bar_finance.html" %}
+    <main class="main app-shell finance-page finance-form-page">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+        <div class="card form-card">
+        <div class="card-header">
+            <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Modifier le paiement</h4>
+        </div>
+        <div class="card-body">
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Enregistrer</button>
             <a href="{% url 'finance:show_box' payment.student.id %}" class="btn btn-secondary">Annuler</a>
         </form>
+        </div>
+        </div>
+        </div>
+        </div>
     </div>
+    </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {

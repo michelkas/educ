@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
   {% include "includes/nav_bar.html" %}
@@ -7,12 +8,12 @@
 
       {% if options.items %}
         <!-- Page Title -->
-        <div class="page-title dark-background" style="background-image: url();">
+        <div class="page-title dark-background" style="background-image: url({% static 'assets/img/education/education-8.webp' %});">
           <div class="container position-relative">
             <h1>Titulaires</h1>
           <nav class="breadcrumbs">
               <ol>
-                <li><a href="/">Acceuil</a></li>
+                <li><a href="/">Accueil</a></li>
                 <li class="current">Titulaires</li>
               </ol>
             </nav>

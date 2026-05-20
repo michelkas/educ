@@ -14,7 +14,7 @@
           <h1>{{event.title}}</h1>
           <nav class="breadcrumbs">
             <ol>
-              <li><a href="{% url "general:event" %}">Evenemens</a></li>
+              <li><a href="{% url "general:event" %}">Evenements</a></li>
               <li class="current">{{event.title}}</li>
             </ol>
           </nav>
@@ -111,7 +111,7 @@
                 {% else %}
 
                 <div class="sidebar-widget related-events" data-aos="fade-left" data-aos-delay="400">
-                  <h3>Related Events</h3>
+                  <h3>Evenements lies</h3>
 
                   {% for relate in relate_event  %}
                       <div class="related-event-item">

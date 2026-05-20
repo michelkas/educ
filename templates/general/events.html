@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
    <!-- NAVBAR HERE -->
   {% include "includes/nav_bar.html" %}
@@ -6,14 +7,14 @@
 
     {% if events %}
     <!-- Page Title -->
-      <div class="page-title dark-background"  {% for img in image %}style="background-image: url({{img.image.url}});" {% endfor %}>
+      <div class="page-title dark-background"{% for img in image %}{% if forloop.first %} style="background-image: url({{ img.image.url }});"{% endif %}{% empty %} style="background-image: url({% static 'assets/img/education/events-5.webp' %});"{% endfor %}>
     
         <div class="container position-relative">
           <h1>Evenements</h1>
-          <p>Decouvrez les evenemens marquant de notre institution</p>
+          <p>Decouvrez les evenements marquants de notre institution</p>
           <nav class="breadcrumbs">
             <ol>
-              <li><a href=" {% url "general:index" %} ">Acceuil</a></li>
+              <li><a href=" {% url "general:index" %} ">Accueil</a></li>
               <li class="current">Events</li>
             </ol>
           </nav>
@@ -83,10 +84,10 @@
 
                 {% if categories %}
                   <div class="sidebar-item" data-aos="fade-up" data-aos-delay="300">
-                    <h3 class="sidebar-title">Event Categories</h3>
+                    <h3 class="sidebar-title">Categories</h3>
                     <div class="categories">
                       <ul>
-                          <li><a href="{% url "general:event"%}" > Tout Affichez <span>({{all}})</span></a></li>
+                          <li><a href="{% url "general:event"%}" >Tout afficher <span>({{all}})</span></a></li>
                           {% for cat in categories  %}
                           <li><a href="{% url "general:event_category" cat.key %}"> {{cat.label}} <span>({{cat.nombre}})</span></a></li>
                           {% endfor %}
@@ -106,4 +107,3 @@
     <!-- ======= Footer ======= -->
   {% include "includes/foot.html" %}
 {% endblock  %}
-

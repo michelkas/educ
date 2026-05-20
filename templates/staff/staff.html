@@ -1,16 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
   {% include "includes/nav_bar.html" %}
     <main class="about-page">
       {% if staffs %}
-        <div class="page-title dark-background" style="background-image: url();">
+        <div class="page-title dark-background" style="background-image: url({% static 'assets/img/education/teacher-1.webp' %});">
             <div class="container position-relative">
               <h1>Staff</h1>
-              <p>Decouvrez notre Equipe</p>
+              <p>Decouvrez notre equipe</p>
               <nav class="breadcrumbs">
                 <ol>
-                  <li><a href="{% url "general:index" %} ">Acceuil</a></li>
+                  <li><a href="{% url "general:index" %} ">Accueil</a></li>
                   <li class="current">Staff</li>
                 </ol>
               </nav>

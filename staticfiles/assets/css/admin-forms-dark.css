@@ -4,14 +4,14 @@
    ======================================== */
 
 :root {
-    --admin-dark: #1e1e2e;
-    --admin-darker: #0f0f1e;
-    --admin-secondary: #2d2d3d;
-    --admin-accent: #6366f1;
-    --admin-accent-hover: #818cf8;
-    --admin-text: #e4e4e7;
-    --admin-text-light: #a1a1aa;
-    --admin-border: #3d3d4d;
+    --admin-dark: #343a40;
+    --admin-darker: #272d33;
+    --admin-secondary: #2f363d;
+    --admin-accent: #00bc8c;
+    --admin-accent-hover: #15d6a8;
+    --admin-text: #f8fafc;
+    --admin-text-light: #c7d0d9;
+    --admin-border: #49515a;
 }
 
 /* ========================================
@@ -19,7 +19,7 @@
    ======================================== */
 
 .inline-related .fieldset > legend {
-    background-color: rgba(99, 102, 241, 0.1);
+    background-color: rgba(0, 188, 140, 0.10);
     color: var(--admin-accent);
     padding: 0.75rem 1rem;
     border-radius: 0.5rem 0.5rem 0 0;
@@ -55,7 +55,7 @@
 
 .form-control[type="file"]::file-selector-button:hover {
     background-color: var(--admin-accent-hover);
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 188, 140, 0.30);
 }
 
 /* ========================================
@@ -70,7 +70,7 @@
 }
 
 .admin-autocomplete-light ul li.choice.selected {
-    background-color: rgba(99, 102, 241, 0.2);
+    background-color: rgba(0, 188, 140, 0.18);
 }
 
 /* ========================================
@@ -95,7 +95,7 @@
 
 .datetimeshortcuts > a:hover {
     background-color: var(--admin-accent-hover);
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 188, 140, 0.30);
 }
 
 /* ========================================
@@ -165,7 +165,7 @@ p.help {
 }
 
 #changelist-filter h3 {
-    background-color: rgba(99, 102, 241, 0.1);
+    background-color: rgba(0, 188, 140, 0.10);
     color: var(--admin-accent);
     padding: 0.75rem;
     border-bottom: 1px solid var(--admin-border);
@@ -179,7 +179,7 @@ p.help {
 
 #changelist-filter > ul li a:hover {
     color: var(--admin-accent);
-    background-color: rgba(99, 102, 241, 0.1);
+    background-color: rgba(0, 188, 140, 0.10);
     border-left: 3px solid var(--admin-accent);
     padding-left: 0.5rem;
 }
@@ -207,7 +207,7 @@ p.help {
 }
 
 .tabular tbody tr:hover {
-    background-color: rgba(99, 102, 241, 0.1);
+    background-color: rgba(0, 188, 140, 0.10);
 }
 
 .tabular .delete input[type="checkbox"] {
@@ -258,7 +258,7 @@ p.help {
 
 .submit-row input[type="submit"].default:hover {
     background-color: var(--admin-accent-hover);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 188, 140, 0.30);
 }
 
 .submit-row input[type="submit"].delete-button {

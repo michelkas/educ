@@ -1,135 +1,680 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% include "includes/nav_bar.html" %}
 
     <style>
-    .students-filters {
-        background: #b9c2c8ff;
-        border-radius: 10px;
-        padding: 20px 10px 10px 10px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    }
-    .students-filters label {
-        font-weight: 500;
-        color: #495057;
-    }
-    .students-filters select {
-        min-width: 120px;
-        border-radius: 6px;
-        border: 1px solid #ced4da;
-        transition: border-color 0.2s;
-    }
-    .students-filters select:focus {
-        border-color: #86b7fe;
-        outline: none;
-    }
-    .students-table th, .students-table td {
-        vertical-align: middle;
-        text-align: center;
-    }
-    .students-table tbody tr:hover {
-        background: #e9f5ff;
-        transition: background 0.2s;
-    }
-    .students-table {
-        border-radius: 10px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    }
-    @media (max-width: 768px) {
-        .students-filters .col-md-3 { flex: 0 0 100%; max-width: 100%; margin-bottom: 10px; }
-        .students-table th, .students-table td { font-size: 13px; }
-    }
+        .students-dashboard {
+            background: #f5f6f8;
+            color: #151922;
+            padding-top: 128px;
+        }
+
+        .students-dashboard .container-fluid {
+            max-width: 1220px;
+        }
+
+        .students-topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .students-title h1 {
+            margin: 0;
+            color: #121722;
+            font-size: clamp(1.9rem, 4vw, 2.7rem);
+            font-weight: 900;
+            letter-spacing: 0;
+        }
+
+        .students-title span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 6px;
+            color: #7b8494;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .students-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .students-print-btn,
+        .students-reset-btn,
+        .students-search-btn {
+            min-height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        .students-print-btn {
+            border: 1px solid #d9dde6;
+            background: #ffffff;
+            color: #111827;
+            box-shadow: 0 8px 18px rgba(17, 24, 39, 0.05);
+        }
+
+        .students-search-btn {
+            border: 0;
+            background: #6d3df5;
+            color: #ffffff;
+            box-shadow: 0 12px 24px rgba(109, 61, 245, 0.22);
+        }
+
+        .students-reset-btn {
+            border: 1px solid #e1e5ee;
+            background: #ffffff;
+            color: #677184;
+        }
+
+        .students-card {
+            border: 1px solid #e8ebf2;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        }
+
+        .students-controls {
+            padding: 18px;
+            border-bottom: 1px solid #eceff5;
+        }
+
+        .students-search {
+            position: relative;
+        }
+
+        .students-search i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            color: #8a93a3;
+            transform: translateY(-50%);
+        }
+
+        .students-search input {
+            min-height: 46px;
+            padding-left: 42px;
+            border: 1px solid #dfe3eb;
+            border-radius: 8px;
+            background: #fafbfc;
+            font-weight: 600;
+        }
+
+        .students-filter-select {
+            min-height: 46px;
+            border: 1px solid #dfe3eb;
+            border-radius: 8px;
+            background-color: #ffffff;
+            font-weight: 700;
+            color: #283142;
+        }
+
+        .students-filter-select:focus,
+        .students-search input:focus {
+            border-color: #6d3df5;
+            box-shadow: 0 0 0 0.2rem rgba(109, 61, 245, 0.12);
+        }
+
+        .students-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .students-stat {
+            padding: 12px 14px;
+            border: 1px solid #eef1f6;
+            border-radius: 8px;
+            background: #fafbfc;
+        }
+
+        .students-stat strong {
+            display: block;
+            color: #151922;
+            font-size: 1.18rem;
+            font-weight: 900;
+        }
+
+        .students-stat span {
+            color: #7a8495;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .students-table-wrap {
+            overflow-x: auto;
+        }
+
+        .students-roster {
+            min-width: 1040px;
+            margin: 0;
+            color: #283142;
+        }
+
+        .students-roster thead th {
+            padding: 14px 16px;
+            border-bottom: 1px solid #edf0f5;
+            background: #ffffff;
+            color: #9aa3b1;
+            font-size: 0.72rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .students-roster tbody td {
+            padding: 13px 16px;
+            border-bottom: 1px solid #f0f2f6;
+            vertical-align: middle;
+            font-weight: 650;
+        }
+
+        .students-roster tbody tr {
+            transition: background-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .students-roster tbody tr:hover {
+            background: #f7f4ff;
+        }
+
+        .students-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            accent-color: #6d3df5;
+        }
+
+        .student-id {
+            color: #656f80;
+            font-weight: 850;
+        }
+
+        .student-person {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 230px;
+        }
+
+        .student-avatar,
+        .student-avatar-fallback {
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            border-radius: 50%;
+        }
+
+        .student-avatar {
+            object-fit: cover;
+        }
+
+        .student-avatar-fallback {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6d3df5, #20a982);
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 900;
+        }
+
+        .student-name a,
+        .student-name span {
+            display: block;
+            color: #171c27;
+            font-weight: 850;
+            line-height: 1.2;
+        }
+
+        .student-name small {
+            display: block;
+            margin-top: 2px;
+            color: #8a93a3;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .student-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 28px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: #f1f4f8;
+            color: #4b5567;
+            font-size: 0.82rem;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+
+        .student-pill.is-purple {
+            background: #f1ecff;
+            color: #5a33c8;
+        }
+
+        .student-pill.is-green {
+            background: #eaf8f0;
+            color: #187348;
+        }
+
+        .student-actions-cell {
+            width: 132px;
+        }
+
+        .student-row-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .student-icon-btn {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e1e5ee;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #667085;
+        }
+
+        .student-icon-btn:hover {
+            border-color: #6d3df5;
+            color: #6d3df5;
+        }
+
+        .student-icon-btn.is-disabled {
+            opacity: 0.38;
+            pointer-events: none;
+        }
+
+        .students-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 18px;
+            color: #7a8495;
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .students-footer .pagination {
+            margin: 0;
+        }
+
+        .students-footer .page-link {
+            min-width: 38px;
+            min-height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-color: #e2e6ee;
+            border-radius: 8px;
+            color: #465164;
+            font-weight: 800;
+        }
+
+        .students-footer .page-item.active .page-link {
+            border-color: #6d3df5;
+            background: #6d3df5;
+            color: #ffffff;
+        }
+
+        .students-empty {
+            padding: 42px 18px;
+            text-align: center;
+        }
+
+        .students-empty i {
+            display: inline-flex;
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border-radius: 50%;
+            background: #f1ecff;
+            color: #6d3df5;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 991px) {
+            .students-dashboard {
+                padding-top: 104px;
+            }
+
+            .students-topbar,
+            .students-footer {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .students-actions,
+            .students-footer .pagination {
+                width: 100%;
+            }
+
+            .students-actions a,
+            .students-actions button {
+                flex: 1 1 auto;
+            }
+
+            .students-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: #ffffff !important;
+            }
+
+            #header,
+            .students-actions,
+            .students-controls,
+            .students-footer,
+            .footer,
+            .scroll-top,
+            #preloader {
+                display: none !important;
+            }
+
+            .app-shell {
+                padding: 0 !important;
+            }
+
+            .students-dashboard,
+            .students-card {
+                background: #ffffff !important;
+                box-shadow: none !important;
+            }
+
+            .students-dashboard .container-fluid {
+                max-width: none;
+                padding: 0;
+            }
+
+            .students-topbar {
+                margin-bottom: 16px;
+            }
+
+            .students-title h1 {
+                font-size: 24px;
+            }
+
+            .students-table-wrap {
+                overflow: visible;
+            }
+
+            .students-roster {
+                min-width: 0;
+                width: 100%;
+                font-size: 11px;
+            }
+
+            .students-roster thead th,
+            .students-roster tbody td {
+                padding: 8px;
+            }
+
+            .print-hidden,
+            .student-actions-cell {
+                display: none !important;
+            }
+        }
     </style>
- 
-    <div class="container mt-4">
-        <h2 class="mb-4">Liste des élèves</h2>
-        <form method="get" class="row g-3 students-filters mb-4" id="filter-form">
-            <div class="col-md-3">
-                <label for="section" class="form-label">Section</label>
-                <select name="section" id="section" class="form-select">
-                    <option value="">Toutes</option>
-                    {% for sec in sections %}
-                        <option value="{{ sec.id }}" {% if request.GET.section == sec.id|stringformat:'s' %}selected{% endif %}>{{ sec.name }}</option>
-                    {% endfor %}
-                </select>
+
+    <main class="main app-shell students-dashboard" data-print-mode="{% if print_mode %}1{% else %}0{% endif %}">
+        <div class="container-fluid">
+            <div class="students-topbar">
+                <div class="students-title">
+                    <h1>Élèves</h1>
+                    <span><i class="bi bi-calendar3"></i> Aujourd'hui</span>
+                </div>
+                <div class="students-actions">
+                    <a class="students-print-btn" href="?{{ print_query_string }}" target="_blank" rel="noopener">
+                        <i class="bi bi-printer"></i>
+                        Imprimer
+                    </a>
+                    <a class="students-reset-btn" href="{% url "students:students_list" %}">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        Réinitialiser
+                    </a>
+                </div>
             </div>
-            <div class="col-md-3">
-                <label for="classe" class="form-label">Classe</label>
-                <select name="classe" id="classe" class="form-select">
-                    <option value="">Toutes</option>
-                    {% for cl in classes %}
-                        <option value="{{ cl.id }}" {% if request.GET.classe == cl.id|stringformat:'s' %}selected{% endif %}>{{ cl.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="option" class="form-label">Option (facultatif)</label>
-                <select name="option" id="option" class="form-select">
-                    <option value="">Toutes</option>
-                    {% for opt in options %}
-                        <option value="{{ opt.id }}" {% if request.GET.option == opt.id|stringformat:'s' %}selected{% endif %}>{{ opt.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <!-- Filtrage automatique -->
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const form = document.getElementById('filter-form');
-                    const selects = form.querySelectorAll('select');
-                    selects.forEach(function(select) {
-                        select.addEventListener('change', function() {
-                            form.submit();
-                        });
+
+            <section class="students-card">
+                <form method="get" class="students-controls" id="students-filter-form">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-lg-4 col-md-12">
+                            <label for="q" class="form-label fw-bold">Recherche élève</label>
+                            <div class="students-search">
+                                <i class="bi bi-search"></i>
+                                <input type="search" name="q" id="q" class="form-control" value="{{ query }}" placeholder="Nom, prénom, matricule...">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4">
+                            <label for="section" class="form-label fw-bold">Section</label>
+                            <select name="section" id="section" class="form-select students-filter-select">
+                                <option value="">Toutes</option>
+                                {% for sec in sections %}
+                                    <option value="{{ sec.id }}" {% if request.GET.section == sec.id|stringformat:'s' %}selected{% endif %}>{{ sec.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-4">
+                            <label for="classe" class="form-label fw-bold">Classe</label>
+                            <select name="classe" id="classe" class="form-select students-filter-select">
+                                <option value="">Toutes</option>
+                                {% for cl in classes %}
+                                    <option value="{{ cl.id }}" {% if request.GET.classe == cl.id|stringformat:'s' %}selected{% endif %}>{{ cl.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-4">
+                            <label for="option" class="form-label fw-bold">Option</label>
+                            <select name="option" id="option" class="form-select students-filter-select">
+                                <option value="">Toutes</option>
+                                {% for opt in options %}
+                                    <option value="{{ opt.id }}" {% if request.GET.option == opt.id|stringformat:'s' %}selected{% endif %}>{{ opt.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-12">
+                            <button type="submit" class="students-search-btn w-100">
+                                <i class="bi bi-sliders"></i>
+                                Filtrer
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="students-stats">
+                        <div class="students-stat">
+                            <strong>{{ total_students }}</strong>
+                            <span>Élèves inscrits</span>
+                        </div>
+                        <div class="students-stat">
+                            <strong>{{ filtered_count }}</strong>
+                            <span>Résultats affichés</span>
+                        </div>
+                        <div class="students-stat">
+                            <strong>{{ page_obj.paginator.num_pages }}</strong>
+                            <span>Pages</span>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="students-table-wrap">
+                    <table class="table students-roster">
+                        <thead>
+                            <tr>
+                                <th class="print-hidden"><input type="checkbox" class="students-check" id="students-check-all" aria-label="Sélectionner tous les élèves"></th>
+                                <th>ID</th>
+                                <th>Eleve</th>
+                                <th>Sexe</th>
+                                <th>Âge</th>
+                                <th>Classe</th>
+                                <th>Section</th>
+                                <th>Option</th>
+                                <th>Statut</th>
+                                <th class="student-actions-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for eleve in page_obj %}
+                                <tr>
+                                    <td class="print-hidden">
+                                        <input type="checkbox" class="students-check students-row-check" aria-label="Sélectionner {{ eleve.name }} {{ eleve.surname }}">
+                                    </td>
+                                    <td class="student-id">#{{ eleve.id }}</td>
+                                    <td>
+                                        <div class="student-person">
+                                            {% if eleve.user and eleve.user.profiles.avatar %}
+                                                <img src="{{ eleve.user.profiles.avatar.url }}" alt="{{ eleve.name }}" class="student-avatar">
+                                            {% else %}
+                                                <span class="student-avatar-fallback">{{ eleve.name|slice:":1" }}{{ eleve.surname|slice:":1" }}</span>
+                                            {% endif %}
+                                            <div class="student-name">
+                                                {% if eleve.user %}
+                                                    <a href="{% url "accounts:profile_students" eleve.user.id %}">
+                                                        {{ eleve.name }} {{ eleve.surname }} {{ eleve.first_name }}
+                                                    </a>
+                                                {% else %}
+                                                    <span>{{ eleve.name }} {{ eleve.surname }} {{ eleve.first_name }}</span>
+                                                {% endif %}
+                                                <small>{{ eleve.matricule }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ eleve.get_sexe_display }}</td>
+                                    <td>{% if eleve.age %}{{ eleve.age }}{% else %}-{% endif %}</td>
+                                    <td><span class="student-pill is-purple">{% if eleve.classe %}{{ eleve.classe }}{% else %}-{% endif %}</span></td>
+                                    <td><span class="student-pill">{% if eleve.section %}{{ eleve.section }}{% else %}-{% endif %}</span></td>
+                                    <td><span class="student-pill">{% if eleve.option %}{{ eleve.option }}{% else %}-{% endif %}</span></td>
+                                    <td><span class="student-pill is-green">{{ eleve.get_statut_display }}</span></td>
+                                    <td class="student-actions-cell">
+                                        <div class="student-row-actions">
+                                            {% if eleve.contact_garduan %}
+                                                <a href="tel:{{ eleve.contact_garduan }}" class="student-icon-btn" title="Appeler le tuteur"><i class="bi bi-telephone"></i></a>
+                                            {% else %}
+                                                <span class="student-icon-btn is-disabled"><i class="bi bi-telephone"></i></span>
+                                            {% endif %}
+                                            {% if eleve.user and eleve.user.email %}
+                                                <a href="mailto:{{ eleve.user.email }}" class="student-icon-btn" title="Envoyer un email"><i class="bi bi-envelope"></i></a>
+                                            {% else %}
+                                                <span class="student-icon-btn is-disabled"><i class="bi bi-envelope"></i></span>
+                                            {% endif %}
+                                            {% if eleve.user %}
+                                                <a href="{% url "accounts:profile_students" eleve.user.id %}" class="student-icon-btn" title="Voir le profil"><i class="bi bi-three-dots"></i></a>
+                                            {% else %}
+                                                <span class="student-icon-btn is-disabled"><i class="bi bi-three-dots"></i></span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="10">
+                                        <div class="students-empty">
+                                            <i class="bi bi-search"></i>
+                                            <h3>Aucun élève trouvé</h3>
+                                            <p class="mb-0 text-muted">Essayez une autre recherche ou modifiez les filtres.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="students-footer">
+                    <span>
+                        {% if filtered_count %}
+                            {{ page_obj.start_index }} à {{ page_obj.end_index }} sur {{ filtered_count }}
+                        {% else %}
+                            0 résultat
+                        {% endif %}
+                    </span>
+                    {% if not print_mode %}
+                        <nav aria-label="Pagination des élèves">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Page précédente">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-left"></i></span></li>
+                                {% endif %}
+
+                                <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+                                <li class="page-item disabled"><span class="page-link">sur {{ page_obj.paginator.num_pages }}</span></li>
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Page suivante">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-right"></i></span></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('students-filter-form');
+            const selects = form.querySelectorAll('select');
+            const checkAll = document.getElementById('students-check-all');
+            const rowChecks = document.querySelectorAll('.students-row-check');
+            const page = document.querySelector('.students-dashboard');
+
+            selects.forEach(function(select) {
+                select.addEventListener('change', function() {
+                    form.submit();
+                });
+            });
+
+            if (checkAll) {
+                checkAll.addEventListener('change', function() {
+                    rowChecks.forEach(function(checkbox) {
+                        checkbox.checked = checkAll.checked;
                     });
                 });
-            </script>
-        </form>
-        <div class="table-responsive">
-        <table class="table table-striped students-table">
-            <thead class="table-light">
-                <tr>
-                    <th>Nom</th>
-                    <th>Post Nom</th>
-                    <th>Prénom</th>
-                    <th>Matricule</th>
-                    <th>Section</th>
-                    <th>Classe</th>
-                    <th>Option</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for eleve in page_obj %}
-                <tr>
-                    <td><a href="{% url "accounts:profile_students"  eleve.user.id %}"> {{ eleve.name }}  </a></td>
-                    <td><a href="{% url "accounts:profile_students"  eleve.user.id %}">{{ eleve.surname }}</a></td>
-                    <td><a href="{% url "accounts:profile_students"  eleve.user.id %}">{{ eleve.first_name }}</a></td>
-                    <td><a href="{% url "accounts:profile_students"  eleve.user.id %}">{{ eleve.matricule }}</a></td>
-                    <td>{{ eleve.section }}</td>
-                    <td>{{ eleve.classe }}</td>
-                    <td>{% if eleve.option %}{{ eleve.option }}{% else %}-{% endif %}</td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="7">Aucun élève trouvé.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        </div>
-        <nav>
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?{% if request.GET.section %}section={{ request.GET.section }}&{% endif %}{% if request.GET.classe %}classe={{ request.GET.classe }}&{% endif %}{% if request.GET.option %}option={{ request.GET.option }}&{% endif %}page={{ page_obj.previous_page_number }}">Précédent</a></li>
-                {% else %}
-                    <li class="page-item disabled"><span class="page-link">Précédent</span></li>
-                {% endif %}
-                <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span></li>
-                {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?{% if request.GET.section %}section={{ request.GET.section }}&{% endif %}{% if request.GET.classe %}classe={{ request.GET.classe }}&{% endif %}{% if request.GET.option %}option={{ request.GET.option }}&{% endif %}page={{ page_obj.next_page_number }}">Suivant</a></li>
-                {% else %}
-                    <li class="page-item disabled"><span class="page-link">Suivant</span></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
+            }
+
+            if (page && page.dataset.printMode === '1') {
+                window.setTimeout(function() {
+                    window.print();
+                }, 350);
+            }
+        });
+    </script>
 {% endblock %}

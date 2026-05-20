@@ -25,22 +25,32 @@
   /**
    * Mobile nav toggle
    */
-  const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
+  const mobileNavToggleBtns = document.querySelectorAll('.mobile-nav-toggle');
 
   function mobileNavToogle() {
     document.querySelector('body').classList.toggle('mobile-nav-active');
-    mobileNavToggleBtn.classList.toggle('bi-list');
-    mobileNavToggleBtn.classList.toggle('bi-x');
+    mobileNavToggleBtns.forEach((mobileNavToggleBtn) => {
+      mobileNavToggleBtn.classList.toggle('bi-list');
+      mobileNavToggleBtn.classList.toggle('bi-x');
+      mobileNavToggleBtn.setAttribute(
+        'aria-label',
+        document.querySelector('body').classList.contains('mobile-nav-active') ? 'Fermer le menu' : 'Ouvrir le menu'
+      );
+    });
   }
-  if (mobileNavToggleBtn) {
+  mobileNavToggleBtns.forEach((mobileNavToggleBtn) => {
     mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
-  }
+  });
 
   /**
    * Hide mobile nav on same-page/hash links
    */
   document.querySelectorAll('#navmenu a').forEach(navmenu => {
     navmenu.addEventListener('click', () => {
+      if (navmenu.parentElement.classList.contains('dropdown') && navmenu.querySelector('.toggle-dropdown')) {
+        return;
+      }
+
       if (document.querySelector('.mobile-nav-active')) {
         mobileNavToogle();
       }
@@ -54,10 +64,21 @@
   document.querySelectorAll('.navmenu .toggle-dropdown').forEach(navmenu => {
     navmenu.addEventListener('click', function(e) {
       e.preventDefault();
-      this.parentNode.classList.toggle('active');
-      this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
+      const dropdownLink = this.closest('a');
+      const dropdownMenu = dropdownLink ? dropdownLink.nextElementSibling : null;
+
+      if (dropdownLink && dropdownMenu) {
+        dropdownLink.classList.toggle('active');
+        dropdownMenu.classList.toggle('dropdown-active');
+      }
       e.stopImmediatePropagation();
     });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.querySelector('.mobile-nav-active')) {
+      mobileNavToogle();
+    }
   });
 
   /**

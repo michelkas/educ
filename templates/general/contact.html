@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
   {% block content %}
       
     <!-- NAVBAR HERE -->
@@ -7,13 +8,13 @@
       <main class="main">
         {% if contact %}
           <!-- Page Title -->
-          <div class="page-title dark-background" style="background-image: url(assets/img/education/showcase-1.webp);">
+          <div class="page-title dark-background" style="background-image: url({% static 'assets/img/education/showcase-1.webp' %});">
             <div class="container position-relative">
               <h1>Contact</h1>
-              <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
+              <p>Une question, une inscription ou une information pratique ? Notre equipe vous repond.</p>
               <nav class="breadcrumbs">
                 <ol>
-                  <li><a href="{% url "general:index" %}">Acceuil</a></li>
+                  <li><a href="{% url "general:index" %}">Accueil</a></li>
                   <li class="current">Contact</li>
                 </ol>
               </nav>

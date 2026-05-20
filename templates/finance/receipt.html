@@ -4,16 +4,58 @@
     <meta charset="UTF-8">
     <title>Reçu de paiement</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .receipt-box {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #eee;
-            box-shadow: 0 0 10px #eee;
+        body {
+            margin: 0;
+            background: #eef3f7;
+            color: #1f2937;
+            font-family: Arial, sans-serif;
         }
-        .print-btn { display: none; }
+        .receipt-box {
+            max-width: 420px;
+            margin: 32px auto;
+            padding: 28px;
+            border: 1px solid #dbe4ea;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+        }
+        h2 {
+            margin: 0 0 8px;
+            color: #0f3d5f;
+            font-size: 24px;
+        }
+        p {
+            line-height: 1.5;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #e5edf2;
+            margin: 18px 0;
+        }
+        .amount {
+            padding: 14px;
+            border-radius: 10px;
+            background: #e8f7ef;
+            color: #106339;
+            font-size: 18px;
+        }
+        .print-btn {
+            width: 100%;
+            border: 0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            background: #085a91;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+        }
         @media print {
+            body { background: #fff; }
+            .receipt-box {
+                margin: 0;
+                border: 0;
+                box-shadow: none;
+            }
             .print-btn { display: none; }
         }
     </style>
@@ -29,7 +71,7 @@
         <p><strong>Mois :</strong> {{ mois }}</p>
         <p><strong>Date de paiement :</strong> {{ paiement.paid_date|date:"d M Y" }}</p>
         <hr>
-        <p><strong>Montant payé :</strong> {{ paiement.amount_pay }} Franc congolais </p>
+        <p class="amount"><strong>Montant payé :</strong> {{ paiement.amount_pay }} Franc congolais </p>
         <button class="print-btn" onclick="window.print()">Imprimer</button>
     </div>
 </body>
