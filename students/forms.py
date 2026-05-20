@@ -73,15 +73,24 @@ class StudentsForm(forms.ModelForm):
         section = cleaned_data.get('section')
         option = cleaned_data.get('option')
         classe = cleaned_data.get('classe')
-        
-        if section and section.name.lower() in ['maternelle', 'primaire'] and option :
+        section_name = section.name.strip().lower() if section else ''
+        classe_name = classe.name.strip().lower() if classe else ''
+
+        if option and section_name in ['maternelle', 'primaire']:
             raise forms.ValidationError(
-                "les élèves en section primaire ou maternelle ne peuvent pas etre attribuer à une option"
-            )   
-            
-        if classe in  ["7ème", "8ème", "7eme", "8eme"]  and option:
-               raise forms.ValidationError(
-                "les élèves en éducation de base(7eme et 8eme) ne peuvent pas avoir d'option " ) 
+                "Les élèves en section primaire ou maternelle ne peuvent pas être attribués à une option."
+            )
+
+        if option and classe_name in ["7ème", "8ème", "7eme", "8eme"]:
+            raise forms.ValidationError(
+                "Les élèves en classe 7ème ou 8ème ne peuvent pas être attribués à une option."
+            )
+
+        if classe_name in ["7ème", "8ème", "7eme", "8eme"] and section_name in ['maternelle', 'primaire']:
+            raise forms.ValidationError(
+                "La classe 7ème ou 8ème ne peut pas appartenir à une section primaire ou maternelle."
+            )
+
         return cleaned_data
     
     def clean_date_birthday(self):

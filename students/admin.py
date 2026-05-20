@@ -63,6 +63,10 @@ class StudentsAdmin(admin.ModelAdmin):
        
     )
 
+    def save_model(self, request, obj, form, change):
+        obj.full_clean()
+        super().save_model(request, obj, form, change)
+
 
 admin.site.site_header = settings.ADMIN_SITE_HEADER 
 admin.site.site_title = settings.ADMIN_SITE_TITLE 

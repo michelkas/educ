@@ -532,7 +532,6 @@
                                 <th>ID</th>
                                 <th>Eleve</th>
                                 <th>Sexe</th>
-                                <th>Âge</th>
                                 <th>Classe</th>
                                 <th>Section</th>
                                 <th>Option</th>
@@ -546,7 +545,7 @@
                                     <td class="print-hidden">
                                         <input type="checkbox" class="students-check students-row-check" aria-label="Sélectionner {{ eleve.name }} {{ eleve.surname }}">
                                     </td>
-                                    <td class="student-id">#{{ eleve.id }}</td>
+                                    <td class="student-id">#{{ eleve.matricule }}</td>
                                     <td>
                                         <div class="student-person">
                                             {% if eleve.user and eleve.user.profiles.avatar %}
@@ -567,10 +566,9 @@
                                         </div>
                                     </td>
                                     <td>{{ eleve.get_sexe_display }}</td>
-                                    <td>{% if eleve.age %}{{ eleve.age }}{% else %}-{% endif %}</td>
-                                    <td><span class="student-pill is-purple">{% if eleve.classe %}{{ eleve.classe }}{% else %}-{% endif %}</span></td>
-                                    <td><span class="student-pill">{% if eleve.section %}{{ eleve.section }}{% else %}-{% endif %}</span></td>
-                                    <td><span class="student-pill">{% if eleve.option %}{{ eleve.option }}{% else %}-{% endif %}</span></td>
+                                    <td><span class="student-pill is-purple">{% if eleve.classe %}{{ eleve.classe }}{% else %}--{% endif %}</span></td>
+                                    <td><span class="student-pill">{% if eleve.section %}{{ eleve.section }}{% else %}--{% endif %}</span></td>
+                                    <td><span class="student-pill">{% if eleve.option %}{{ eleve.option }}{% else %}--{% endif %}</span></td>
                                     <td><span class="student-pill is-green">{{ eleve.get_statut_display }}</span></td>
                                     <td class="student-actions-cell">
                                         <div class="student-row-actions">
