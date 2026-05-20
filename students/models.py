@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from education.models import Classes, Section, Options
 from django.utils import timezone  
 from phonenumber_field.modelfields import PhoneNumberField
+from django.utils import timezone
 
 class Students(models.Model):
     """
@@ -57,28 +59,43 @@ class Students(models.Model):
 
     def save(self, *args, **kwargs):
         """Sauvegarde l'élève et génère automatiquement le matricule lors de la première sauvegarde."""
-        """
-        Sauvegarde l'élève et génère automatiquement le matricule lors de la première sauvegarde.
-        Args:
-            *args: Arguments positionnels.
-            **kwargs: Arguments nommés.
-        """
-        if not self.id and not self.matricule:
-            super().save(*args, **kwargs)  # Première sauvegarde pour avoir l'ID
-            from django.utils import timezone
-            self.matricule = f"{timezone.now().year}0{self.id} - {self.name[:1].upper()}"
-            super().save(update_fields=['matricule'])  # Mise à jour du matricule uniquement
+        creating = self.pk is None
+        if creating:
+            initial_kwargs = kwargs.copy()
+            initial_kwargs.pop('update_fields', None)
+            super().save(*args, **initial_kwargs)
+            if not self.matricule:
+                self.matricule = self._generate_matricule()
+                super().save(update_fields=['matricule'])
         else:
             super().save(*args, **kwargs)
 
+    def _generate_matricule(self):
+        option_code = str(self.option.code).zfill(3) if self.option and self.option.code is not None else '000'
+        return f"{timezone.now().year}{option_code}{self.id:03d}"
+
     def __str__(self):
-        """Retourne la représentation textuelle de l'élève."""
-        """
-        Retourne la représentation textuelle de l'élève.
-        Returns:
-            str: Nom complet de l'élève.
-        """
         return f" {self.name} {self.surname} {self.first_name} "
+
+    def clean(self):
+        """Valide l'attribution d'option et la cohérence section/classe."""
+        section_name = self.section.name.strip().lower() if self.section else ''
+        classe_name = self.classe.name.strip().lower() if self.classe else ''
+
+        if self.option:
+            if section_name in ['maternelle', 'primaire']:
+                raise ValidationError(
+                    "Les élèves en section primaire ou maternelle ne peuvent pas être attribués à une option."
+                )
+            if classe_name in ['7ème', '8ème', '7eme', '8eme']:
+                raise ValidationError(
+                    "Les élèves en classe 7ème ou 8ème ne peuvent pas être attribués à une option."
+                )
+
+        if classe_name in ['7ème', '8ème', '7eme', '8eme'] and section_name in ['maternelle', 'primaire']:
+            raise ValidationError(
+                "La classe 7ème ou 8ème ne peut pas appartenir à une section primaire ou maternelle."
+            )
 
     def formatted_created_at(self):
         """Retourne la date de création formatée."""

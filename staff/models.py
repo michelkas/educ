@@ -5,6 +5,7 @@ Chaque classe et méthode est documentée selon les standards Pylint.
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from django.urls import reverse
 
@@ -86,6 +87,23 @@ class Staff(models.Model):
         verbose_name = 'fonctionnaire'
         verbose_name_plural = 'fonctionnaires'
         ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        creating = self.pk is None
+        if creating:
+            initial_kwargs = kwargs.copy()
+            initial_kwargs.pop('update_fields', None)
+            super().save(*args, **initial_kwargs)
+            if not self.matricule:
+                self.matricule = self._generate_matricule()
+                super().save(update_fields=['matricule'])
+        else:
+            super().save(*args, **kwargs)
+
+    def _generate_matricule(self):
+        birthday_code = self.date_birthday.strftime('%y') if self.date_birthday else '00'
+        name_initial = self.name[:1].upper() if self.name else 'X'
+        return f"{timezone.now().strftime('%Y')}{self.pk:04d}{birthday_code}{name_initial}"
 
     def __str__(self):
         """
