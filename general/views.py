@@ -6,16 +6,20 @@ from staff.models import Staff
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db.models import Count, Sum
+from core.models import Core
 
 
 def index(request):
+    core = Core.objects.first()
+    getyear = core.date_created.year if core and core.date_created else timezone.now().year
+    
     context = {
         'program': Program.objects.only('id', 'title', 'credit', 'duration', 'level', 'description', 'image')[:6],
         'program_count': Program.objects.count(),
         'about': About.objects.only('id', 'description').first(),
         'actuality':Actuality.objects.only('id', 'title', 'image')[:4],
         'testimonial':Testimonial.objects.only('id', 'content', 'role')[:6],
-        'year': int(timezone.now().year) - 2022,
+        'year': int(timezone.now().year) - getyear,
         'option': Options.objects.count(),
         'students': Students.objects.count() if Students.objects else 0,
         'hr': Hero.objects.only('id','title' ,'message', 'video').first(),
@@ -25,10 +29,13 @@ def index(request):
     return render(request, 'index.html', context)
 
 def about(request):
+    core = Core.objects.first()
+    getyear = core.date_created.year if core and core.date_created else timezone.now().year
+    
     context = {
         'about': About.objects.only('id', 'description', 'image').first(),
         'staffs': Staff.objects.select_related('user').filter(admin=True).only('id', 'user', 'admin'),
-        'year': int(timezone.now().year) - 2022,
+        'year': int(timezone.now().year) - getyear,
         'staff_count': Staff.objects.count() ,      
     }
     return render(request, 'general/about.html', context)

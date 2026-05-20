@@ -1,28 +1,34 @@
 {% load static %}
 <header id="header" class="header app-header d-flex align-items-center fixed-top">
   <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-    <a href="{% url "general:index" %}" class="logo d-flex align-items-center">
-      <img src="{% static "assets/img/log.png" %}" alt="{{ core }}">
-      <h1 class="sitename">{{ core|upper }}</h1>
+    <a href="{% url 'general:index' %}" class="logo d-flex align-items-center">
+    
+    {% if core.logo %}
+         <img src="{{core.logo.url}}" alt="{{ core.logo }}" class="logo-img me-2">
+    {% else %}
+         <img src="{% static 'assets/img/favicon.png' %}" alt="Default Logo" class="logo-img me-2">
+    {% endif %}
+     
+      <h1 class="sitename">{{ core.official_name|upper }}</h1>
     </a>
 
     <nav id="navmenu" class="navmenu">
       <ul>
-        <li><a href="{% url "general:index" %}">Accueil</a></li>
-        <li><a href="{% url "general:event" %}">Evenements</a></li>
-        <li><a href="{% url "general:program" %}">Programmes</a></li>
+        <li><a href="{% url 'general:index' %}">Accueil</a></li>
+        <li><a href="{% url 'general:event' %}">Evenements</a></li>
+        <li><a href="{% url 'general:program' %}">Programmes</a></li>
         <li class="dropdown">
-          <a href="{% url "general:about" %}">
+          <a href="{% url 'general:about' %}">
             <span>A propos</span>
             <i class="bi bi-chevron-down toggle-dropdown"></i>
           </a>
           <ul>
-            <li><a href="{% url "general:about" %}">A propos</a></li>
-            <li><a href="{% url "staff:dean" %}">Titulaires</a></li>
-            <li><a href="{% url "staff:staff" %}">Staff</a></li>
+            <li><a href="{% url 'general:about' %}">A propos</a></li>
+            <li><a href="{% url 'staff:dean' %}">Titulaires</a></li>
+            <li><a href="{% url 'staff:staff' %}">Staff</a></li>
           </ul>
         </li>
-        <li><a href="{% url "general:contact" %}">Contact</a></li>
+        <li><a href="{% url 'general:contact' %}">Contact</a></li>
 
         {% if user.is_authenticated %}
           {% if is_staff %}
@@ -36,7 +42,7 @@
             <ul>
               <li>
                 {% if current_student %}
-                  <a href="{% url "accounts:profile_students" user.id %}">
+                  <a href="{% url 'accounts:profile_students' user.id %}">
                     {% if user.first_name and user.last_name %}
                       {{ user.first_name }} {{ user.last_name }}
                     {% else %}
@@ -44,7 +50,7 @@
                     {% endif %}
                   </a>
                 {% else %}
-                  <a href="{% url "accounts:profile" user.id %}">
+                  <a href="{% url 'accounts:profile' user.id %}">
                     {% if user.first_name and user.last_name %}
                       {{ user.first_name }} {{ user.last_name }}
                     {% else %}
@@ -54,13 +60,13 @@
                 {% endif %}
               </li>
               {% if is_staff or user.is_superuser %}
-                <li><a href="{% url "students:students_list" %}">Eleves</a></li>
+                <li><a href="{% url 'students:students_list' %}">Eleves</a></li>
               {% endif %}
-              <li><a href="{% url "accounts:logout" %}" class="nav-danger">Deconnexion</a></li>
+              <li><a href="{% url 'accounts:logout' %}" class="nav-danger">Deconnexion</a></li>
             </ul>
           </li>
         {% else %}
-          <li><a href="{% url "accounts:login" %}" class="nav-cta">Connexion</a></li>
+          <li><a href="{% url 'accounts:login' %}" class="nav-cta">Connexion</a></li>
         {% endif %}
       </ul>
       <i class="mobile-nav-toggle d-xl-none bi bi-list" aria-label="Ouvrir le menu" role="button"></i>
