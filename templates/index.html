@@ -307,7 +307,7 @@
                       <div class="event-content">
                         <div class="event-tag academic"> {{act.get_category_display}} </div>
                         <h3> {{act.title}} </h3>
-                        <p> {{act.description|truncatewords:20}} </p>
+                        <p> {{act.description|truncatewords:20|safe}} </p>
                         <div class="event-meta">
                           <div class="meta-item">
                             <i class="bi bi-clock"></i>
@@ -319,7 +319,7 @@
                           </div>
                         </div>
                         <div class="event-actions">
-                          <a href="{% url "general:show_event" act.id %}" class="btn-learn-more"> Lire plus</a>
+                          <a href="{% url 'general:show_event' act.id %}" class="btn-learn-more"> Lire plus</a>
                       </div>
                       </div>
                     </div>
@@ -328,7 +328,7 @@
               </div>
 
               <div class="text-center mt-4 mt-md-5">
-                <a href="{% url "general:event" %}" class="btn-view-all">Voir tous les événements</a>
+                <a href="{% url 'general:event' %}" class="btn-view-all">Voir tous les événements</a>
               </div>
 
             </div>
