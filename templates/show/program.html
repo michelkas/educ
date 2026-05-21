@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
   {% include "includes/nav_bar.html" %}
     <!-- Page Title -->
-      <div class="page-title dark-background" style="background-image: url({{program.image.url}});">
+      <div class="page-title dark-background" style="background-image: url({% if program.image %}{{ program.image.url }}{% else %}{% static 'assets/img/education/education-5.webp' %}{% endif %});">
         <div class="container position-relative">
           <h1>{{program.title|capfirst}}</h1>
           <nav class="breadcrumbs">
@@ -34,7 +35,11 @@
             </div>
 
             <div class="article-featured-image" data-aos="zoom-in">
-              <img src="{{program.image.url}}" alt="UI Design Evolution" class="img-fluid">
+              {% if program.image %}
+                <img src="{{ program.image.url }}" alt="{{ program.title }}" class="img-fluid">
+              {% else %}
+                <img src="{% static 'assets/img/education/education-5.webp' %}" alt="{{ program.title }}" class="img-fluid">
+              {% endif %}
             </div>
 
             <div class="article-wrapper">

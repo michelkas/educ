@@ -17,9 +17,11 @@ class Profiles(models.Model):
     Modèle représentant le profil utilisateur étendu.
     Contient les informations supplémentaires liées à l'utilisateur.
     """
+    DEFAULT_AVATAR = 'avatar/default_bcIt09K.jpg'
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True, max_length= 120)
-    avatar = models.ImageField(upload_to='avatar/', default='avatar/default_bcIt09K.jpg', blank=True)
+    avatar = models.ImageField(upload_to='avatar/', default=DEFAULT_AVATAR, blank=True)
     
     class Meta:
         db_table = 'profiles'
@@ -29,24 +31,28 @@ class Profiles(models.Model):
         """
         Sauvegarde le profil après avoir redimensionné l'avatar si nécessaire.
         """
-        #redimensionner la photo avant de sauvegarder
-        if self.avatar:
-            #ouvrir l'image
-            img = Image.open(self.avatar)
-            
-            #redimensionner si necessaire 
-            if img.height > 300 or img.width > 300:
-                output_size = (300, 300)
-                img.thumbnail(output_size)
-                
-                #sauvegarde l'image redimensionné
-                buffer = BytesIO()
-                img.save(buffer, format = img.format if img.format else 'JPEG')
-                self.avatar.save(
-                    self.avatar.name,
-                    ContentFile(buffer.getvalue()),
-                    save=False
-                )
+        if not self.avatar or not self.avatar.name:
+            self.avatar = self.DEFAULT_AVATAR
+        elif not self.avatar.storage.exists(self.avatar.name):
+            self.avatar = self.DEFAULT_AVATAR
+
+        if self.avatar and self.avatar.name != self.DEFAULT_AVATAR:
+            try:
+                img = Image.open(self.avatar)
+            except (FileNotFoundError, OSError, ValueError):
+                self.avatar = self.DEFAULT_AVATAR
+            else:
+                if img.height > 300 or img.width > 300:
+                    output_size = (300, 300)
+                    img.thumbnail(output_size)
+
+                    buffer = BytesIO()
+                    img.save(buffer, format=img.format if img.format else 'JPEG')
+                    self.avatar.save(
+                        os.path.basename(self.avatar.name),
+                        ContentFile(buffer.getvalue()),
+                        save=False
+                    )
         super().save(*args, **kwargs)
         
     def __str__(self):

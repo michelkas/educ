@@ -16,7 +16,22 @@
                             {% for field in form %}
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">{{ field.label }}</label>
-                                    {{ field }}
+                                    {% if field.name == "student" %}
+                                        {{ field.as_hidden }}
+                                        <div class="student-search-wrap">
+                                            <input
+                                                type="text"
+                                                id="student-search"
+                                                class="form-control"
+                                                autocomplete="off"
+                                                placeholder="Tapez le matricule ou le nom de l'élève"
+                                                value="{{ selected_student_label }}"
+                                            >
+                                            <div id="student-results" class="student-results" hidden></div>
+                                        </div>
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
                                     {% if field.help_text %}
                                         <small class="form-text text-muted">{{ field.help_text }}</small>
                                     {% endif %}
@@ -36,39 +51,196 @@
         </div>
     </div>
     </main>
-    <!-- Charger jQuery dans le <head> du template principal ou ici si besoin -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .student-search-wrap {
+            position: relative;
+        }
+
+        .student-results {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 6px);
+            z-index: 20;
+            max-height: 280px;
+            overflow-y: auto;
+            border: 1px solid #d9e2ec;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.14);
+        }
+
+        .student-result {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 12px;
+            border: 0;
+            border-bottom: 1px solid #edf2f7;
+            background: #fff;
+            color: #1f2937;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .student-result:last-child {
+            border-bottom: 0;
+        }
+
+        .student-result:hover,
+        .student-result:focus {
+            background: #f5f8fb;
+            outline: none;
+        }
+
+        .student-result strong,
+        .student-empty {
+            display: block;
+            font-size: 14px;
+        }
+
+        .student-result small {
+            display: block;
+            margin-top: 3px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .student-class {
+            border-radius: 999px;
+            padding: 5px 9px;
+            background: #e8f4ff;
+            color: #0f5f8f;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .student-empty {
+            padding: 12px;
+            color: #6b7280;
+        }
+    </style>
     <script>
-        $(document).ready(function() {
-            $('#id_student').on('change', function() {
-                var studentId = $(this).val();
-                $.ajax({
-                    url: "{% url 'finance:fees_for_student' %}",
-                    data: { student_id: studentId },
-                    dataType: 'json',
-                    success: function(data) {
-                        var feesSelect = $('#id_fees');
-                        feesSelect.empty();
-                        if (data.fees.length === 0) {
-                            feesSelect.append($('<option>', {
-                                value: '',
-                                text: 'Aucun frais disponible'
-                            }));
-                        } else {
-                            $.each(data.fees, function(index, fee) {
-                                feesSelect.append($('<option>', {
-                                    value: fee.id,
-                                    text: fee.name + ' (' + fee.amount + ' FC)'
-                                }));
-                            });
+        document.addEventListener('DOMContentLoaded', function() {
+            const studentInput = document.getElementById('student-search');
+            const studentHidden = document.getElementById('id_student');
+            const resultsBox = document.getElementById('student-results');
+            const feesSelect = document.getElementById('id_fees');
+            let searchTimer = null;
+
+            function clearFees(message = 'Sélectionnez d’abord un élève') {
+                if (!feesSelect) return;
+                feesSelect.innerHTML = '';
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = message;
+                feesSelect.appendChild(option);
+            }
+
+            function renderStudents(students) {
+                resultsBox.innerHTML = '';
+
+                if (!students.length) {
+                    const empty = document.createElement('div');
+                    empty.className = 'student-empty';
+                    empty.textContent = 'Aucun élève trouvé';
+                    resultsBox.appendChild(empty);
+                    resultsBox.hidden = false;
+                    return;
+                }
+
+                students.forEach(function(student) {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'student-result';
+
+                    const identity = document.createElement('span');
+                    const name = document.createElement('strong');
+                    const details = document.createElement('small');
+                    const classe = document.createElement('span');
+
+                    name.textContent = student.full_name;
+                    details.textContent = `${student.matricule} • ${student.section} • ${student.option}`;
+                    classe.className = 'student-class';
+                    classe.textContent = student.classe;
+
+                    identity.appendChild(name);
+                    identity.appendChild(details);
+                    button.appendChild(identity);
+                    button.appendChild(classe);
+
+                    button.addEventListener('click', function() {
+                        studentHidden.value = student.id;
+                        studentInput.value = `${student.full_name} - ${student.matricule} - ${student.classe}`;
+                        resultsBox.hidden = true;
+                        loadFees(student.id);
+                    });
+                    resultsBox.appendChild(button);
+                });
+                resultsBox.hidden = false;
+            }
+
+            function loadFees(studentId) {
+                if (!studentId || !feesSelect) return;
+
+                fetch(`{% url 'finance:fees_for_student' %}?student_id=${encodeURIComponent(studentId)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        feesSelect.innerHTML = '';
+                        if (!data.fees.length) {
+                            clearFees('Aucun frais disponible');
+                            return;
                         }
-                    },
-                    error: function() {
-                        alert('Erreur lors du chargement des frais.');
+
+                        data.fees.forEach(function(fee) {
+                            const option = document.createElement('option');
+                            option.value = fee.id;
+                            option.textContent = `${fee.name} (${fee.amount} FC)`;
+                            feesSelect.appendChild(option);
+                        });
+                    })
+                    .catch(function() {
+                        clearFees('Erreur lors du chargement des frais');
+                    });
+            }
+
+            if (studentInput && studentHidden) {
+                studentInput.addEventListener('input', function() {
+                    const query = studentInput.value.trim();
+                    studentHidden.value = '';
+                    clearFees();
+
+                    window.clearTimeout(searchTimer);
+                    if (query.length < 2) {
+                        resultsBox.hidden = true;
+                        resultsBox.innerHTML = '';
+                        return;
+                    }
+
+                    searchTimer = window.setTimeout(function() {
+                        fetch(`{% url 'finance:search_students' %}?q=${encodeURIComponent(query)}`)
+                            .then(response => response.json())
+                            .then(data => renderStudents(data.students || []))
+                            .catch(function() {
+                                resultsBox.innerHTML = '<div class="student-empty">Erreur lors de la recherche</div>';
+                                resultsBox.hidden = false;
+                            });
+                    }, 220);
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.student-search-wrap')) {
+                        resultsBox.hidden = true;
                     }
                 });
-            });
+
+                if (!studentHidden.value) {
+                    clearFees();
+                }
+            }
         });
     </script>
 {% endblock %}
-

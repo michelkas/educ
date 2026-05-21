@@ -1,33 +1,15 @@
-from .forms import BoxForm, FeesForm
-from collections import defaultdict
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Box, Fees, MonthChoice
-from students.models import Students
-from staff.models import Staff
 from django.utils import timezone
 from general.models import Contact
 from django.db.models import Sum
-from django.http import HttpResponseForbidden
-from django.views.decorators.cache import cache_page
 from education.models import Classes, Section, Options
-from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 
-def role_required(role):
-    def decorator(view_func):
-        """
-        Décorateur pour restreindre l'accès à une vue selon le rôle du staff.
-        Usage : @role_required('caisse')
-        """
-        def _wrapped_view(request, *args, **kwargs):
-            if not request.user.is_authenticated:
-                return HttpResponseForbidden("⛔ vous devez etre connecté")
-            if not hasattr(request.user, 'staff') or not request.user.staff.role == role:
-                return HttpResponseForbidden("⛔ Accès interdit")
-            return view_func(request, *args, **kwargs)
-        return _wrapped_view
-    return decorator
+from .forms import BoxForm, FeesForm
+from .models import Box, Fees, MonthChoice
+from .permissions import get_user_staff, role_required
+from students.models import Students
 
-@cache_page(60 * 5)  # 5 minutes
 @login_required
 @role_required('caisse')
 def index_box(request):
@@ -172,7 +154,7 @@ def index_box(request):
     # 7. Calcul des totaux du jour (pour affichage en haut de page)
     today = timezone.localdate()
     transactions_today = Box.objects.filter(paid_date__date=today)
-    total_today = transactions_today.aggregate(total=models.Sum('amount_pay'))['total'] or 0
+    total_today = transactions_today.aggregate(total=Sum('amount_pay'))['total'] or 0
     count_today = transactions_today.count()
 
     # 8. Rendu du template avec toutes les variables nécessaires
@@ -214,6 +196,7 @@ def show_box(request, student_id):
         HttpResponse: La page HTML affichant le détail des paiements de l'élève.
     """
     paiements = Box.objects.filter(student__id=student_id)
+    paiement = paiements.first()
     # Regroupement unique par frais/mois
     unique_frais_mois = {}
     for paiement in paiements:
@@ -262,7 +245,7 @@ def show_box(request, student_id):
     groupe_frais_dict = deep_dict(dict(groupe_frais))
     return render(request, "finance/show_box.html", {
         "groupe_frais": groupe_frais_dict,
-        'paiement':paiement
+        'paiement': paiement
     })
 
 @login_required
@@ -281,11 +264,33 @@ def add_payment(request):
     if request.method == 'POST':
         form = BoxForm(request.POST)
         if form.is_valid():
-            payment =  form.save()
+            payment = form.save(commit=False)
+            payment.collector = get_user_staff(request.user)
+            payment.save()
             return redirect('finance:print_receipt', payment_id=payment.id)
     else:
         form = BoxForm()
-    return render(request, 'finance/add_payment_modal.html', {'form': form})
+
+    selected_student_label = ""
+    student_id = form.data.get('student') if form.is_bound else form.initial.get('student')
+    if student_id:
+        student = (
+            Students.objects
+            .select_related('classe')
+            .filter(pk=student_id)
+            .first()
+        )
+        if student:
+            classe = student.classe.name if student.classe else "-"
+            selected_student_label = (
+                f"{student.name} {student.surname} {student.first_name} "
+                f"- {student.matricule} - {classe}"
+            )
+
+    return render(request, 'finance/add_payment_modal.html', {
+        'form': form,
+        'selected_student_label': selected_student_label,
+    })
 
 @login_required
 @role_required('caisse')
@@ -329,21 +334,29 @@ def print_receipt(request, payment_id):
     """
     payment = get_object_or_404(Box, pk=payment_id)
     student = payment.student
-    total = Box.objects.filter(student=student).aggregate(total=Sum('amount_pay'))['total']
-    attendu = payment.fees.amount if hasattr(payment, 'fees') else None
-    statut = "Payé" if total and attendu and total >= attendu else "Partiel"
+    total = (
+        Box.objects
+        .filter(student=student, fees=payment.fees, month=payment.month)
+        .aggregate(total=Sum('amount_pay'))['total'] or 0
+    )
+    attendu = payment.fees.amount
+    reste = max(attendu - total, 0)
+    statut = "Payé" if reste == 0 else "Partiel"
     context = {
         'nom_eleve': f"{student.name} {student.surname} {student.first_name}",
-        'classe': student.classe.name if hasattr(student, 'classe') else '',
+        'classe': student.classe.name if student.classe else '',
         'option': student.option.name if student.option else '',
         'matricule': student.matricule,
         'section':student.section.name if student.section else '',
-        'type_frais': payment.fees.name if hasattr(payment, 'fees') else '',
-        'mois': payment.get_month_display,
+        'type_frais': payment.fees.name,
+        'mois': payment.get_month_display(),
         'paiement': payment,
         'total': total,
         'attendu': attendu,
+        'reste': reste,
         'statut': statut,
+        'contact': Contact.objects.only('email', 'tel', 'address').first(),
+        'receipt_number': f"REC-{payment.id:06d}",
     }
     return render(request, 'finance/receipt.html', context)
 
@@ -426,4 +439,3 @@ def delete_fees(request, fee_id):
     if request.method == 'POST':
         fee.delete()
         return redirect('finance:index_fees')
-   

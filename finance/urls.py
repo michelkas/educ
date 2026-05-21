@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .ajax_views import get_fees_for_student
+from .ajax_views import get_fees_for_student, search_students
 
 app_name = 'finance'
 
@@ -26,5 +26,6 @@ urlpatterns = [
     
     path('finance/add_fee/', views.add_fee, name="add_fees"),
     path('finance/ajax/fees_for_student/', get_fees_for_student, name="fees_for_student"),
+    path('finance/ajax/search_students/', search_students, name="search_students"),
 
 ]

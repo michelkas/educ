@@ -1,4 +1,5 @@
-{% extends "base.html" %}                                                                                   
+{% extends "base.html" %}
+{% load static %}
 
 {% block content  %}
     <!-- NAVBAR HERE -->
@@ -9,7 +10,7 @@
 
       <!-- Page Title -->
 
-      <div class="page-title dark-background" style="background-image: url({{event.image.url}});">
+      <div class="page-title dark-background" style="background-image: url({% if event.image %}{{ event.image.url }}{% else %}{% static 'assets/img/education/events-5.webp' %}{% endif %});">
         <div class="container position-relative">
           <h1>{{event.title}}</h1>
           <nav class="breadcrumbs">
@@ -29,7 +30,11 @@
           <div class="row">
             <div class="col-lg-8">
               <div class="event-image mb-4" data-aos="fade-up">
-                <img src="{{event.image.url}}" alt="Event" class="img-fluid rounded">
+                {% if event.image %}
+                  <img src="{{ event.image.url }}" alt="{{ event.title }}" class="img-fluid rounded">
+                {% else %}
+                  <img src="{% static 'assets/img/education/events-5.webp' %}" alt="{{ event.title }}" class="img-fluid rounded">
+                {% endif %}
               </div>
 
               <div class="event-meta mb-4" data-aos="fade-up" data-aos-delay="100">
@@ -92,7 +97,11 @@
                   <h3>Animateur</h3>
                   <div class="organizer-details">
                     <div class="organizer-image">
-                      <img src="{{ event.facilitator.user.profiles.avatar.url }}" class="img-fluid rounded" alt="Organizer">
+                      {% if event.facilitator.user.profiles.avatar %}
+                        <img src="{{ event.facilitator.user.profiles.avatar.url }}" class="img-fluid rounded" alt="Organizer">
+                      {% else %}
+                        <i class="bi bi-person-circle"></i>
+                      {% endif %}
                     </div>
                     <div class="organizer-content">
                       <h4> <a href="{% url "accounts:profile" event.facilitator.user.id %}" class="bold" style="color:black;" > {{ event.facilitator.title }} {{ event.facilitator.name }} {{ event.facilitator.firstname }} </a> </h4>

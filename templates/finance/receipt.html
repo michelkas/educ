@@ -2,77 +2,448 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reçu de paiement</title>
     <style>
+        :root {
+            --ink: #111827;
+            --muted: #6b7280;
+            --line: #d7dee8;
+            --paper: #ffffff;
+            --soft: #f3f6fa;
+            --accent: #0f5f8f;
+            --success: #0f7a4f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            background: #eef3f7;
-            color: #1f2937;
-            font-family: Arial, sans-serif;
+            background: #e9eef5;
+            color: var(--ink);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
         }
-        .receipt-box {
-            max-width: 420px;
+
+        .receipt-page {
+            width: min(760px, calc(100% - 32px));
             margin: 32px auto;
-            padding: 28px;
-            border: 1px solid #dbe4ea;
-            border-radius: 14px;
+        }
+
+        .receipt-box {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+            overflow: hidden;
+        }
+
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 28px 32px 22px;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .school-block {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .school-logo {
+            width: 64px;
+            height: 64px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            object-fit: contain;
+            padding: 6px;
             background: #fff;
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
         }
-        h2 {
-            margin: 0 0 8px;
-            color: #0f3d5f;
-            font-size: 24px;
+
+        .school-mark {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: var(--accent);
+            font-weight: 800;
+            font-size: 22px;
         }
+
+        h1,
+        h2,
         p {
+            margin: 0;
+        }
+
+        .school-name {
+            color: var(--ink);
+            font-size: 19px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .school-meta {
+            margin-top: 6px;
+            color: var(--muted);
             line-height: 1.5;
+            max-width: 360px;
         }
-        hr {
-            border: 0;
-            border-top: 1px solid #e5edf2;
-            margin: 18px 0;
+
+        .receipt-title {
+            text-align: right;
         }
-        .amount {
+
+        .receipt-title h1 {
+            color: var(--accent);
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
+
+        .receipt-title span {
+            display: inline-block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .receipt-body {
+            padding: 28px 32px 30px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .panel-title {
+            padding: 10px 14px;
+            background: var(--soft);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .panel-content {
             padding: 14px;
-            border-radius: 10px;
-            background: #e8f7ef;
-            color: #106339;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 18px;
+        }
+
+        .info-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .label {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .value {
+            display: block;
+            margin-top: 3px;
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 96px;
+            padding: 8px 12px;
+            border: 1px solid rgba(15, 122, 79, 0.25);
+            border-radius: 999px;
+            background: #eaf8f1;
+            color: var(--success);
+            font-weight: 800;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--soft);
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        td:last-child,
+        th:last-child {
+            text-align: right;
+        }
+
+        .amount-row td {
+            background: #f8fafc;
+            font-weight: 800;
+        }
+
+        .amount-paid {
+            color: var(--success);
             font-size: 18px;
         }
-        .print-btn {
-            width: 100%;
+
+        .footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-top: 28px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .signature {
+            min-height: 72px;
+            border-top: 1px solid var(--line);
+            padding-top: 10px;
+            text-align: center;
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 18px;
             border: 0;
             border-radius: 8px;
-            padding: 12px 16px;
-            background: #085a91;
+            background: var(--accent);
             color: #fff;
             font-weight: 700;
             cursor: pointer;
+            text-decoration: none;
         }
+
+        .btn.secondary {
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+        }
+
+        @media (max-width: 640px) {
+            .receipt-header,
+            .summary,
+            .footer {
+                grid-template-columns: 1fr;
+            }
+
+            .receipt-header {
+                display: grid;
+                padding: 22px;
+            }
+
+            .receipt-title {
+                text-align: left;
+            }
+
+            .receipt-body {
+                padding: 22px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+
         @media print {
-            body { background: #fff; }
-            .receipt-box {
+            @page {
+                size: A4;
+                margin: 12mm;
+            }
+
+            body {
+                background: #fff;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .receipt-page {
+                width: 100%;
                 margin: 0;
-                border: 0;
+            }
+
+            .receipt-box {
+                border-radius: 0;
                 box-shadow: none;
             }
-            .print-btn { display: none; }
+
+            .actions {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="receipt-box">
-        <h2>Reçu de paiement</h2>
-        <p><strong> COMPLEXE SCOLAIRE GETHSEMANE</strong></p>
-        <hr>
-        <p><strong>Élève :</strong> {{ nom_eleve }} | <strong>{{matricule}}  </strong> </p>
-        <p><strong>Classe :</strong> {{ classe }} {% if option %}  {{ classe }} {% endif %} </p>
-        <p><strong>Type de frais :</strong> {{ type_frais }}</p>
-        <p><strong>Mois :</strong> {{ mois }}</p>
-        <p><strong>Date de paiement :</strong> {{ paiement.paid_date|date:"d M Y" }}</p>
-        <hr>
-        <p class="amount"><strong>Montant payé :</strong> {{ paiement.amount_pay }} Franc congolais </p>
-        <button class="print-btn" onclick="window.print()">Imprimer</button>
+    <div class="receipt-page">
+        <div class="receipt-box">
+            <header class="receipt-header">
+                <div class="school-block">
+                    {% if core.logo %}
+                        <img class="school-logo" src="{{ core.logo.url }}" alt="Logo de l'établissement">
+                    {% else %}
+                        <div class="school-mark">WE</div>
+                    {% endif %}
+                    <div>
+                        <p class="school-name">{{ core.official_name|default:"Complexe Scolaire Gethsemane" }}</p>
+                        <p class="school-meta">
+                            {% if contact and contact.address %}{{ contact.address }}{% endif %}
+                            {% if contact and contact.tel %}<br>Tél. {{ contact.tel }}{% endif %}
+                            {% if contact and contact.email %}<br>{{ contact.email }}{% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="receipt-title">
+                    <h1>Reçu de paiement</h1>
+                    <span>{{ receipt_number }}</span>
+                </div>
+            </header>
+
+            <main class="receipt-body">
+                <section class="summary">
+                    <div class="panel">
+                        <div class="panel-title">Informations de l'élève</div>
+                        <div class="panel-content info-grid">
+                            <div class="info-item full">
+                                <span class="label">Nom complet</span>
+                                <span class="value">{{ nom_eleve }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Matricule</span>
+                                <span class="value">{{ matricule }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Classe</span>
+                                <span class="value">{{ classe }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Section</span>
+                                <span class="value">{{ section|default:"-" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Option</span>
+                                <span class="value">{{ option|default:"-" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-title">Paiement</div>
+                        <div class="panel-content info-grid">
+                            <div class="info-item full">
+                                <span class="label">Statut</span>
+                                <span class="status-pill">{{ statut }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Date</span>
+                                <span class="value">{{ paiement.paid_date|date:"d/m/Y H:i" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Mode</span>
+                                <span class="value">{{ paiement.get_type_paiement_display }}</span>
+                            </div>
+                            <div class="info-item full">
+                                <span class="label">Caissier</span>
+                                <span class="value">
+                                    {% if paiement.collector %}
+                                        {{ paiement.collector.name }} {{ paiement.collector.firstname }}
+                                    {% else %}
+                                        Non renseigné
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Désignation</th>
+                            <th>Mois</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ type_frais }}</td>
+                            <td>{{ mois }}</td>
+                            <td class="amount-paid">{{ paiement.amount_pay|floatformat:2 }} FC</td>
+                        </tr>
+                        <tr class="amount-row">
+                            <td colspan="2">Total payé pour ce frais et ce mois</td>
+                            <td>{{ total|floatformat:2 }} FC</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Montant attendu</td>
+                            <td>{{ attendu|floatformat:2 }} FC</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Reste à payer</td>
+                            <td>{{ reste|floatformat:2 }} FC</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <footer class="footer">
+                    <p>Ce reçu confirme l'enregistrement du paiement dans la caisse de l'établissement.</p>
+                    <div class="signature">Signature et cachet</div>
+                </footer>
+            </main>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="window.print()">Imprimer le reçu</button>
+            <a class="btn secondary" href="{% url 'finance:index_finance' %}">Retour à la caisse</a>
+        </div>
     </div>
 </body>
 </html>

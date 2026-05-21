@@ -3,9 +3,12 @@ Modèles pour la gestion financière (frais, paiements, caisse, etc.).
 Chaque classe et méthode est documentée selon les standards Pylint.
 """
 
+from decimal import Decimal
+
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.db import models
+from django.core.exceptions import ValidationError
 from education.models import *
 from students.models import Students
 from staff.models import Staff
@@ -50,7 +53,17 @@ class Fees(models.Model):
             str: Description du frais.
         """
         return f"{self.name} {self.amount}"
-    
+
+    def is_school_fee(self):
+        """
+        Détermine si ce frais doit être considéré comme un frais scolaire.
+        Returns:
+            bool: True si le frais est scolaire, False sinon.
+        """
+        normalized_name = self.name.lower() if self.name else ""
+        school_keywords = ["scolar", "minerval", "scolaire"]
+        return any(keyword in normalized_name for keyword in school_keywords)
+
     def formatted_created_at(self):
         """
         Retourne la date de création formatée.
@@ -110,6 +123,77 @@ class Box(models.Model):
             str: Description du paiement.
         """
         return f"{self.student} - {self.fees.name} - {self.get_month_display()}"
+
+    def clean(self):
+        super().clean()
+
+        if self.amount_pay is None:
+            return
+
+        if self.amount_pay <= 0:
+            raise ValidationError({
+                "amount_pay": "Le montant payé doit être supérieur à zéro."
+            })
+
+        if not self.student_id or not self.fees_id or not self.month:
+            return
+
+        total_deja_paye = (
+            Box.objects
+            .filter(student_id=self.student_id, fees_id=self.fees_id, month=self.month)
+            .exclude(pk=self.pk)
+            .aggregate(total=models.Sum("amount_pay"))["total"]
+            or Decimal("0.00")
+        )
+        reste_a_payer = self.fees.amount - total_deja_paye
+
+        if reste_a_payer <= 0:
+            raise ValidationError({
+                "amount_pay": (
+                    f"Ce frais est déjà totalement payé pour le mois de "
+                    f"{self.get_month_display()}."
+                )
+            })
+
+        if self.amount_pay > reste_a_payer:
+            raise ValidationError({
+                "amount_pay": (
+                    f"Montant maximum autorisé : {reste_a_payer:.2f} FC. "
+                    f"Total déjà payé : {total_deja_paye:.2f} FC sur "
+                    f"{self.fees.amount:.2f} FC pour ce mois."
+                )
+            })
+
+        # Empêcher paiement d'un mois ultérieur uniquement pour les frais scolaires.
+        if self.fees.is_school_fee():
+            earlier_months = [m for m in MonthChoice.values if m < self.month]
+            for earlier_month in earlier_months:
+                total_paye_earlier = (
+                    Box.objects
+                    .filter(
+                        student_id=self.student_id,
+                        fees_id=self.fees_id,
+                        month=earlier_month,
+                    )
+                    .exclude(pk=self.pk)
+                    .aggregate(total=models.Sum("amount_pay"))["total"]
+                    or Decimal("0.00")
+                )
+                if total_paye_earlier < self.fees.amount:
+                    raise ValidationError(
+                        {
+                            "month": (
+                                f"Impossible de payer le mois {MonthChoice(earlier_month).label} "
+                                f"avant la régularisation de la dette précédente. "
+                                f"Il reste {self.fees.amount - total_paye_earlier:.2f} FC à payer pour "
+                                f"le mois {MonthChoice(earlier_month).label}."
+                            )
+                        }
+                    )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
     
         
     def add_payment(self, *amount):
@@ -275,7 +359,5 @@ def update_total_on_box_change(sender, instance, **kwargs):
             total_obj.reste = reste
             total_obj.statut = statut
             total_obj.save()
-
-
 
 

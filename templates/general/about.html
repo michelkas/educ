@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
   {% include "includes/nav_bar.html" %}
@@ -7,7 +8,7 @@
       {% if about %}
           <!-- Page Title -->
           
-            <div class="page-title dark-background" style="background-image: url({{about.image.url}});">
+            <div class="page-title dark-background" style="background-image: url({% if about.image %}{{ about.image.url }}{% else %}{% static 'assets/img/education/campus-9.webp' %}{% endif %});">
               <div class="container position-relative">
                 <h1>A propos</h1>
                 <p>Decouvrez notre institution</p>
@@ -37,7 +38,11 @@
 
                   <div class="col-lg-6">
                     <div class="about-image" data-aos="zoom-in" data-aos-delay="300">
-                      <img src="{{about.image_2.url}}" alt="Campus" class="img-fluid rounded">
+                      {% if about.image_2 %}
+                        <img src="{{ about.image_2.url }}" alt="Campus" class="img-fluid rounded">
+                      {% else %}
+                        <img src="{% static 'assets/img/education/campus-9.webp' %}" alt="Campus" class="img-fluid rounded">
+                      {% endif %}
 
                       <div class="mission-vision" data-aos="fade-up" data-aos-delay="400">
                         <div class="mission">
@@ -141,7 +146,11 @@
                     <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
                       <div class="leader-card">
                         <div class="leader-image">
-                          <img src="{{staff.user.profiles.avatar.url}}" alt="Principal" class="img-fluid">
+                          {% if staff.user.profiles.avatar %}
+                            <img src="{{ staff.user.profiles.avatar.url }}" alt="Principal" class="img-fluid">
+                          {% else %}
+                            <i class="bi bi-person-circle"></i>
+                          {% endif %}
                         </div>
                         <div class="leader-info">
                           <h4>  {{staff.title}} {{staff.name}} {{staff.first_name}} </h4>

@@ -7,7 +7,7 @@
   <main class="main">
     {% if events %}
       <!-- Page Title -->
-      <div class="page-title dark-background"{% for img in image %}{% if forloop.first %} style="background-image: url({{ img.image.url }});"{% endif %}{% empty %} style="background-image: url({% static 'assets/img/education/events-5.webp' %});"{% endfor %}>
+      <div class="page-title dark-background" style="background-image: url({% static 'assets/img/education/events-5.webp' %});">
     
         <div class="container position-relative">
           <h1>Evenements</h1>

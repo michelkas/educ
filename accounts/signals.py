@@ -9,6 +9,9 @@ def create_user_profile(sender, instance, created, **kwargs):
         Profiles.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
-def save_user_profile(sender, instance, created, **kwargs):
+def save_user_profile(sender, instance, created, update_fields=None, **kwargs):
+    if created or update_fields == {"last_login"} or update_fields == ["last_login"]:
+        return
+
     if hasattr(instance, 'profiles'):
         instance.profiles.save()
