@@ -18,7 +18,7 @@
             {% endif %}
             <div class="overlay"></div>
             <div class="container">
-              <div class="row align-items-center">
+              <div class="row align-items-center g-3 g-md-4">
                 <div class="col-lg-7" data-aos="zoom-out" data-aos-delay="100">
                   <div class="hero-content">
                     <h1>{{hr.title}}</h1>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="stat-content">
                           <h4>{{program_count}}+</h4>
-                          <p>Programmes d'Étude</p>
+                          <p>Programmes</p>
                         </div>
                       </div>
                       <div class="stat-item">
@@ -71,23 +71,22 @@
 
           <div class="event-ticker">
             <div class="container">
-              <div class="row gy-4">
+              <div class="row gy-3 gy-md-4">
 
-                <div class="col-md-6 col-xl-4 col-12 ticker-item">
+                <div class="col-12 col-sm-6 col-xl-4 ticker-item">
                   <span class="date">{{hr.open_date|date:"M d Y"}}</span>
                   <span class="title">Ouverture</span>
                 
                 </div>
 
-                <div class="col-md-6 col-12 col-xl-4  ticker-item">
+                <div class="col-12 col-sm-6 col-xl-4 ticker-item">
                   <span class="date">{{hr.register_date|date:"M d Y"}}</span>
-                  <span class="title">Date d'Inscription</span>
-                  {% comment %} <a href="#" class="btn-register">Register</a> {% endcomment %}
+                  <span class="title">Inscription</span>
                 </div>
 
-                <div class="col-md-6 col-12 col-xl-4 ticker-item">
+                <div class="col-12 col-sm-6 col-xl-4 ticker-item">
                   <span class="date">{{hr.close_date|date:"M d Y"}}</span>
-                  <span class="title">Date de cloture</span>
+                  <span class="title">Clôture</span>
                   
                 </div>
               </div>
@@ -101,21 +100,21 @@
       <!-- About Section -->
       <section id="about" class="about section">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-          <div class="row mb-5">
-            <div class="col-lg-6 pe-lg-5" data-aos="fade-right" data-aos-delay="200">
-              <h2 class="display-6 fw-bold mb-4">A Propos  <span> de Nous</span></h2>
+          <div class="row mb-4 mb-md-5 g-3 g-md-4">
+            <div class="col-lg-6 pe-lg-4 pe-xl-5" data-aos="fade-right" data-aos-delay="200">
+              <h2 class="display-5 display-md-6 fw-bold mb-3 mb-md-4">À Propos <span>de Nous</span></h2>
             
-                <p class="lead mb-4"> {{about.description|truncatewords:20|safe}} </p>
+                <p class="lead mb-3 mb-md-4"> {{about.description|truncatewords:30|safe}} </p>
             
 
-              <div class="d-flex flex-wrap gap-4 mb-4">
+              <div class="d-flex flex-wrap gap-3 gap-md-4 mb-4">
                 <div class="stat-box">
                   <span class="stat-number"><span data-purecounter-start="0" data-purecounter-end="{{year}}" data-purecounter-duration="2" class="purecounter"></span>+</span>
                   <span class="stat-label">Années</span>
                 </div>
                 <div class="stat-box">
                   <span class="stat-number"><span data-purecounter-start="0" data-purecounter-end="{{students}}" data-purecounter-duration="2" class="purecounter"></span>+</span>
-                  <span class="stat-label">Elèves</span>
+                  <span class="stat-label">Élèves</span>
                 </div>
                 <div class="stat-box">
                   <span class="stat-number"><span data-purecounter-start="0" data-purecounter-end="{{option}}" data-purecounter-duration="2" class="purecounter"></span>+</span>
@@ -126,53 +125,57 @@
               <div class="d-flex align-items-center mt-4 signature-block">
                 {% if principal %}
                   
-                    <div class="ms-3">
-                      <p class="mb-0 fw-bold">  {{principal.title}} {{principal.firstname}}   {{principal.name}} </p>
-                      <p class="mb-0 text-muted">Principal</p>
+                    <div class="ms-0 ms-md-3">
+                      <p class="mb-0 fw-bold">  {{principal.title}} {{principal.firstname}} {{principal.name}} </p>
+                      <p class="mb-0 text-muted small">Directeur</p>
                     </div>
               
                 {% endif %}
               </div>
             </div>
       
-            <div class="col-lg-5" data-aos="fade-left" data-aos-delay="300">
+            <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
               <div class="image-stack">
                 <div class="image-stack-item image-stack-item-top" data-aos="zoom-in" data-aos-delay="400">
-                  <img src="{{about.image.url}}" alt="{{about.image}}" class="img-fluid rounded-4 shadow-lg">
+                  {% if about.image %}
+                    <img src="{{about.image.url}}" alt="{{about.title}}" class="img-fluid rounded-4 shadow-lg w-100">
+                  {% endif %}
                 </div>
                 <div class="image-stack-item image-stack-item-bottom" data-aos="zoom-in" data-aos-delay="500">
-                  <img src="{{about.image_2.url}}" alt="{{about.image}}" class="img-fluid rounded-4 shadow-lg">
+                  {% if about.image_2 %}
+                    <img src="{{about.image_2.url}}" alt="{{about.title}}" class="img-fluid rounded-4 shadow-lg w-100">
+                  {% endif %}
                 </div>
               </div>
             </div>
           
           </div>
-            <div class="row mission-vision-row g-4">
-              <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="row mission-vision-row g-3 g-md-4">
+              <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="value-card h-100">
                   <div class="card-icon">
                     <i class="bi bi-rocket-takeoff"></i>
                   </div>
-                  <h3>Notre Mission</h3>
-                  <p>{{about.mission|truncatewords:20|safe}}</p>
+                  <h3>Mission</h3>
+                  <p>{{about.mission|truncatewords:25|safe}}</p>
                 </div>
               </div>
-              <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="value-card h-100">
                   <div class="card-icon">
                     <i class="bi bi-eye"></i>
                   </div>
-                  <h3>Notre Vision</h3>
-                  <p>{{about.vision|truncatewords:20|safe}}</p>
+                  <h3>Vision</h3>
+                  <p>{{about.vision|truncatewords:25|safe}}</p>
                 </div>
               </div>
-              <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+              <div class="col-12 col-lg-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="value-card h-100">
                   <div class="card-icon">
                     <i class="bi bi-star"></i>
                   </div>
-                  <h3>Nos Valeurs</h3>
-                  <p>{{about.values|truncatewords:20|safe}}</p>
+                  <h3>Valeurs</h3>
+                  <p>{{about.values|truncatewords:25|safe}}</p>
                 </div>
               </div>
             </div>
@@ -188,35 +191,37 @@
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
           <h2>Programmes phares 🎓</h2>
-          <p>Prenez par   a nos programmes et devenez meilleur dans le monde de demain</p>
+          <p>Participez à nos programmes et devenez meilleur dans le monde de demain</p>
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
           <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-            <div class="row g-4 isotope-container">
+            <div class="row g-3 g-md-4 isotope-container">
 
-              {% for prog  in  program %}
-                <div class="col-lg-6 isotope-item filter-bachelor" data-aos="zoom-in" data-aos-delay="100">
+              {% for prog in program %}
+                <div class="col-12 col-md-6 isotope-item filter-bachelor" data-aos="zoom-in" data-aos-delay="100">
                   <div class="program-item">
 
                     <div class="program-badge"> {{prog.level}} </div>
 
-                    <div class="row g-0">
-                      <div class="col-md-4">
+                    <div class="row g-0 h-100">
+                      <div class="col-12 col-sm-5">
                         <div class="program-image-wrapper">
-                          <img src="{{prog.image.url}}" class="img-fluid" alt="{{prog.image}}">
+                          {% if prog.image %}
+                            <img src="{{prog.image.url}}" class="img-fluid w-100 h-100" alt="{{prog.title}}">
+                          {% endif %}
                         </div>
                       </div>
-                      <div class="col-md-8">
+                      <div class="col-12 col-sm-7">
                         <div class="program-content">
-                          <h3> {{ prog.title }} </h3>
+                          <h3>{{ prog.title }}</h3>
                           <div class="program-highlights">
-                            <span><i class="bi bi-clock"></i> {{ prog.duration }} </span>
-                            <span><i class="bi bi-people-fill"></i> {{ prog.credit }} credit{{ prog.credit|pluralize:"s" }} </span>
+                            <span><i class="bi bi-clock"></i> <small>{{ prog.duration }}</small></span>
+                            <span><i class="bi bi-people-fill"></i> <small>{{ prog.credit }} crédits</small></span>
                           </div>
-                          <p> {{ prog.description|truncatewords:20|safe }} </p> 
-                          <a href="{% url "general:show_program" prog.id %}" class="program-btn"><span> Detail</span> <i class="bi bi-arrow-right"></i></a>
+                          <p> {{ prog.description|truncatewords:15|safe }} </p> 
+                          <a href="{% url "general:show_program" prog.id %}" class="program-btn"><span>Détails</span> <i class="bi bi-arrow-right"></i></a>
                         </div>
                       </div>
                     </div>
@@ -238,16 +243,16 @@
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-          <h2>Temoignages</h2>
-          <p>Suivez quelque Temoignage faite par le monde à notre propos</p>
+          <h2>Témoignages</h2>
+          <p>Découvrez les avis de nos étudiants et parents</p>
         </div><!-- End Section Title -->
 
-        <div class="container">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
 
           <div class="testimonial-masonry">
 
             {% for testi in testimonial %}
-            <div class="testimonial-item highlight" data-aos="fade-up" data-aos-delay=" {{forloop.counter|add:"1"}}00">
+            <div class="testimonial-item highlight" data-aos="fade-up" data-aos-delay="{{forloop.counter|add:"1"}}00">
               <div class="testimonial-content">
                 <div class="quote-pattern">
                   <i class="bi bi-quote"></i>
@@ -255,11 +260,15 @@
                 <p> {{testi.content|safe}} </p>
                 <div class="client-info">
                   <div class="client-image">
-                    <img src="{{testi.image.url}}" alt="Client">
+                    {% if testi.image %}
+                      <img src="{{testi.image.url}}" alt="{{testi.fullname}}" class="w-100 h-100">
+                    {% else %}
+                      <i class="bi bi-person-circle"></i>
+                    {% endif %}
                   </div>
                   <div class="client-details">
-                    <h3> {{testi.fullname}} </h3>
-                    <span class="position"> {{testi.role}} </span>
+                    <h4> {{testi.fullname}} </h4>
+                    <span class="position text-muted small"> {{testi.role}} </span>
                   </div>
                 </div>
               </div>
@@ -278,39 +287,39 @@
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-          <h2>Evennements</h2>
-          <p> Decouvrez les evenement marquant a venir et passez de notre ecole</p>
+          <h2>Événements</h2>
+          <p>Découvrez les événements marquants à venir et passés de notre école</p>
         </div><!-- End Section Title -->
         
         
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
               <!-- category here -->
-              <div class="row g-4">
+              <div class="row g-3 g-md-4">
                 {% for act in actuality  %}
-                  <div class="col-lg-6">
+                  <div class="col-12 col-md-6 col-lg-6">
                     <div class="event-card">
                       <div class="event-date">
-                        <span class="month"> {{act.date|date:"M"}} </span>
+                        <span class="month"> {{act.date|date:"b"|upper}} </span>
                         <span class="day">  {{act.date|date:"d"}} </span>
                         <span class="year"> {{act.date|date:"Y"}}</span>
                       </div>
                       <div class="event-content">
                         <div class="event-tag academic"> {{act.get_category_display}} </div>
                         <h3> {{act.title}} </h3>
-                        <p> {{act.description|truncatewords:25}} </p>
+                        <p> {{act.description|truncatewords:20}} </p>
                         <div class="event-meta">
                           <div class="meta-item">
                             <i class="bi bi-clock"></i>
-                            <span>  {{act.date|time:"H:i T"}} - {{act.end|time:"H:i T"}}</span>
+                            <span class="small">  {{act.date|time:"H:i"}} - {{act.end|time:"H:i"}}</span>
                           </div>
                           <div class="meta-item">
                             <i class="bi bi-geo-alt"></i>
-                            <span>  {{act.place}}</span>
+                            <span class="small">  {{act.place}}</span>
                           </div>
                         </div>
                         <div class="event-actions">
-                          <a href="  {% url "general:show_event" act.id %}"   class="btn-learn-more"> Lire plus</a>
+                          <a href="{% url "general:show_event" act.id %}" class="btn-learn-more"> Lire plus</a>
                       </div>
                       </div>
                     </div>
@@ -318,8 +327,8 @@
               {% endfor %}
               </div>
 
-              <div class="text-center mt-5">
-                <a href="{% url "general:event" %} " class="btn-view-all">Voir tout</a>
+              <div class="text-center mt-4 mt-md-5">
+                <a href="{% url "general:event" %}" class="btn-view-all">Voir tous les événements</a>
               </div>
 
             </div>

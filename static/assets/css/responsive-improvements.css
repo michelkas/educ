@@ -1,0 +1,490 @@
+/* ============================================================
+   RESPONSIVE DESIGN IMPROVEMENTS
+   White Education - Main Responsive Fixes & Enhancements
+   ============================================================ */
+
+/* ============================================================
+   HERO SECTION RESPONSIVE IMPROVEMENTS
+   ============================================================ */
+.overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(2px);
+}
+
+.hero-content {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.hero-content h1 {
+    font-size: clamp(1.75rem, 6vw, 3.5rem);
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-content p {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #085a91 0%, #0a7bb4 100%) !important;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(8, 90, 145, 0.3);
+    color: white !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0a7bb4 0%, #085a91 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(8, 90, 145, 0.4);
+    color: white !important;
+}
+
+.stats-card {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: clamp(1.5rem, 4vw, 2rem);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    animation: slideInRight 0.8s ease-out;
+}
+
+.stats-header h3 {
+    color: #333;
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================================
+   EVENT TICKER RESPONSIVE
+   ============================================================ */
+.event-ticker {
+    background: linear-gradient(135deg, #085a91 0%, #0a7bb4 100%);
+    padding: 1.5rem 0;
+    color: white;
+}
+
+.ticker-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 0.5rem;
+}
+
+.ticker-item .date {
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255, 0.3);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+}
+
+.ticker-item .title {
+    margin-right: 0;
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
+    font-weight: 500;
+}
+
+/* ============================================================
+   ABOUT SECTION IMPROVEMENTS
+   ============================================================ */
+.about h2 span {
+    background: linear-gradient(135deg, #085a91, #28a745);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.image-stack {
+    position: relative;
+    height: clamp(300px, 60vw, 500px);
+    margin-top: 2rem;
+}
+
+.image-stack-item {
+    position: absolute;
+    width: 80%;
+    height: auto;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+}
+
+.image-stack-item:hover {
+    transform: translateY(-10px);
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
+}
+
+.image-stack-item img {
+    object-fit: cover;
+    width: 100%;
+    display: block;
+}
+
+.image-stack-item-top {
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+.image-stack-item-bottom {
+    z-index: 2;
+    bottom: 0;
+    right: 0;
+}
+
+/* ============================================================
+   PROGRAM SECTION IMPROVEMENTS
+   ============================================================ */
+.program-item {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.program-image-wrapper {
+    height: clamp(150px, 40vw, 250px);
+    overflow: hidden;
+}
+
+.program-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.program-item:hover .program-image-wrapper img {
+    transform: scale(1.08);
+}
+
+.program-content {
+    padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.program-highlights {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* ============================================================
+   TESTIMONIALS IMPROVEMENTS
+   ============================================================ */
+.testimonial-item.highlight .testimonial-content {
+    background: linear-gradient(135deg, rgba(8, 90, 145, 0.08) 0%, rgba(40, 167, 69, 0.08) 100%);
+    border-left: 4px solid #085a91;
+}
+
+.client-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+}
+
+/* ============================================================
+   EVENT CARD IMPROVEMENTS
+   ============================================================ */
+.event-card {
+    display: flex;
+    min-height: auto;
+    transition: all 0.3s ease;
+}
+
+.event-date {
+    background: linear-gradient(135deg, #085a91 0%, #0a7bb4 100%);
+    min-width: 100px;
+    padding: 1.5rem;
+}
+
+.event-content {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.event-content h3 {
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    margin: 0.5rem 0;
+}
+
+/* ============================================================
+   GENERAL RESPONSIVE UTILITIES
+   ============================================================ */
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* ============================================================
+   TABLET DEVICES (768px and up)
+   ============================================================ */
+@media (max-width: 992px) {
+    .image-stack {
+        height: clamp(250px, 80vw, 400px);
+    }
+
+    .hero .hero-container {
+        text-align: center;
+    }
+}
+
+/* ============================================================
+   SMALL TABLETS & LANDSCAPE PHONES (768px and down)
+   ============================================================ */
+@media (max-width: 768px) {
+    .hero .hero-container {
+        padding: 120px 0 60px 0;
+        min-height: auto;
+    }
+
+    .hero-content h1 {
+        text-align: center;
+    }
+
+    .hero-content p {
+        text-align: center;
+    }
+
+    .cta-buttons {
+        justify-content: center;
+    }
+
+    .stats-card {
+        margin-top: 2rem;
+    }
+
+    .image-stack {
+        height: clamp(200px, 80vw, 400px);
+    }
+
+    .image-stack-item-top,
+    .image-stack-item-bottom {
+        position: relative !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        margin-bottom: 1rem;
+        z-index: auto !important;
+    }
+
+    .event-ticker {
+        padding: 1rem 0;
+    }
+
+    .ticker-item {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .testimonial-masonry {
+        grid-template-columns: 1fr !important;
+    }
+
+    .client-image {
+        width: 45px;
+        height: 45px;
+    }
+
+    .event-card {
+        flex-direction: column;
+    }
+
+    .event-date {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        min-width: auto;
+        padding: 1rem;
+    }
+
+    .program-image-wrapper {
+        height: 180px;
+    }
+
+    .program-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .program-highlights span {
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================================
+   MOBILE DEVICES (576px and down)
+   ============================================================ */
+@media (max-width: 576px) {
+    .hero-content {
+        padding-right: 0;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    .btn-primary {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stats-card {
+        padding: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .stats-grid {
+        gap: 0.75rem;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stat-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .stats-header h3 {
+        font-size: 1.25rem;
+    }
+
+    .image-stack {
+        height: clamp(200px, 90vw, 350px);
+    }
+
+    .event-date .day {
+        font-size: 1.5rem;
+        margin: 0 0.3rem;
+    }
+
+    .event-content h3 {
+        font-size: 1rem;
+    }
+
+    .ticker-item .date {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .ticker-item .title {
+        font-size: 0.75rem;
+    }
+
+    .about h2 {
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+    }
+
+    .value-card {
+        padding: 1.5rem;
+    }
+
+    .value-card h3 {
+        font-size: 1.25rem;
+    }
+}
+
+/* ============================================================
+   EXTRA SMALL DEVICES (360px and down)
+   ============================================================ */
+@media (max-width: 360px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-primary {
+        padding: 8px 20px;
+        font-size: 0.85rem;
+    }
+
+    .event-date {
+        min-width: 80px;
+        padding: 0.75rem;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================================
+   DARK MODE SUPPORT
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    .stats-card {
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+    }
+
+    .stats-header h3 {
+        color: #fff;
+    }
+
+    .image-stack-item {
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    }
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+    .event-ticker,
+    .cta-buttons {
+        display: none;
+    }
+
+    .hero {
+        padding: 20px 0;
+    }
+}
