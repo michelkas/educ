@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title> {% block title %}{% if core.official_name %} {{ core.official_name }} {% else %} {{ core.site_title }} {% endif %} {% endblock %} </title>
+    <title> {% block title %}{% if core.official_name %} {{ core.official_name }} {% else %} --- {% endif %} {% endblock %} </title>
 
     <meta name="description" content="{{core.official_name|default:'une ecole de référence avec une bonne formation'}}">
     <meta name="keywords" content="{% if core.official_name %} {{core.official_name}} {% else %}  ecole {% endif %},école, éducation, diplome">

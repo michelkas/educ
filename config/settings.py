@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$xfnk$i7d6!-^l0xz-lhe$c#e2yfr_@wsipfs4*ftk27&79bx5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['whilesolution.pythonanywhere.com']
+ALLOWED_HOSTS = ['whilesolution.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 ADMIN_SITE_HEADER = "Panneau d'administration"
 ADMIN_SITE_TITLE = "Administration While Educ"
