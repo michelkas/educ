@@ -57,6 +57,13 @@ def login_view(request):
         form = CustomLoginForm()
     return render(request, "accounts/login.html", {'form':form})
 
+def forgot_password(request):
+    """
+    Page de mot de passe oublié.
+    Indique à l'utilisateur de contacter l'administration pour réinitialiser son mot de passe.
+    """
+    return render(request, "accounts/forgot_password.html")
+
 def profile(request, user_id):
     """
     Vue pour afficher le profil d'un utilisateur staff.

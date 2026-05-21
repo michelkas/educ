@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$xfnk$i7d6!-^l0xz-lhe$c#e2yfr_@wsipfs4*ftk27&79bx5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['whilesolution.pythonanywhere.com']
+ALLOWED_HOSTS = ['whilesolution.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 ADMIN_SITE_HEADER = "Panneau d'administration"
 ADMIN_SITE_TITLE = "Administration While Educ"
@@ -153,10 +153,10 @@ JAZZMIN_SETTINGS = {
     "use_google_fonts_cdn": True,
 
     # -- Titres et marques --
-    "site_title": "Administration While Educ",
+    "site_title": "Administration",
     "site_header": "Panneau d'administration",
     "site_brand": "While Educ Admin",
-    "welcome_sign": "Bienvenue dans l'administration While Educ",
+    "welcome_sign": "Bienvenue dans l'administration",
 
     # -- Logos et icônes --
     "site_logo": "assets/img/favicon.png",

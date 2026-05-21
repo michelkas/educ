@@ -1,47 +1,64 @@
 {% extends "base.html" %}
 
+{% block title %}Connexion - {{ core.official_name|default:'Plateforme' }}{% endblock %}
+
 {% block content %}
-
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-5">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title text-center mb-4">Se connecter</h3>
-
-                        <!-- Messages -->
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-
-                        <!-- Formulaire -->
-                        <form method="POST" novalidate>
-                            {% csrf_token %}
-                            <div class="mb-3">
-                            
-                                {{ form.as_p}}
-                                
-                            </div>
-                            <div class="d-grid ">
-                                <button type="submit" class="btn btn-primary">Se connecter</button>
-                            </div>
-                        </form>
-
-                        <div class="mt-auto text-center">
-                            <a href="">Mot de passe oublié ?</a>
-                        </div>
-                    </div>
-                </div>
+<div class="min-vh-100 d-flex align-items-center justify-content-center position-relative overflow-hidden">
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="background: radial-gradient(circle at top left, rgba(102,126,234,0.18), transparent 25%), radial-gradient(circle at bottom right, rgba(115,103,240,0.18), transparent 25%), #f8f9fa;"></div>
+  <div class="container py-5" style="z-index: 2;">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        <div class="card border-0 shadow-lg overflow-hidden">
+          <div class="row g-0">
+            <div class="col-md-5 bg-primary text-white d-flex flex-column justify-content-center p-4">
+              <div class="mb-4">
+                <h2 class="h4 fw-bold">Bienvenue</h2>
+                <p class="small opacity-85">Accédez à votre espace sécurisé pour les élèves et le personnel.</p>
+              </div>
+              <div>
+                <span class="badge bg-light text-primary mb-3">Accès protégé</span>
+                <p class="small">Vous pouvez demander l'aide de l'administration si vous avez oublié votre mot de passe.</p>
+              </div>
             </div>
+            <div class="col-md-7 p-4">
+              <div class="mb-4 text-center">
+                <h3 class="h5 fw-semibold mb-2">Se connecter</h3>
+                <p class="text-muted small mb-0">Entrez vos identifiants pour continuer.</p>
+              </div>
+
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+
+              <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                  {{ form.username }}
+                </div>
+                <div class="mb-3">
+                  {{ form.password }}
+                </div>
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary btn-lg">Se connecter</button>
+                </div>
+              </form>
+
+              <div class="mt-4 text-center">
+                <a href="{% url 'accounts:forgot_password' %}" class="text-decoration-none">Mot de passe oublié ?</a>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    
-{% endblock  %}
+  </div>
+</div>
+{% endblock %}
 
 
 
