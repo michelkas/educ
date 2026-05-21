@@ -92,9 +92,10 @@
             </div>
           </div>
 
+        {% if profile and user.is_authenticated and user.id == profile.user.id %}
           <aside class="profile-summary-card">
             <div class="profile-summary-grid">
-              {% if profile and user.is_authenticated and user.id == profile.user.id %}
+
               <div class="profile-summary-item">
                 <span class="profile-label">Statut</span>
                 <span class="profile-value">{% if staff and staff.admin %}Administrateur{% elif staff %}Personnel academique{% else %}Utilisateur{% endif %}</span>
@@ -113,9 +114,10 @@
                 <span class="profile-label">Derniere connexion</span>
                 <span class="profile-value">{% if profile %}{{ profile.formatted_updated_at }}{% else %}Jamais{% endif %}</span>
               </div>
-              {% endif %}
+
             </div>
           </aside>
+        {% endif %}
         </div>
       </div>
 
@@ -145,15 +147,15 @@
                   <div class="profile-value">{% if staff %}{{ staff.role.all|join:", "|default:"Membre du personnel" }}{% else %}Non renseigne{% endif %}</div>
                 </div>
               </div>
+            {% if profile and user.is_authenticated and user.id == profile.user.id %}
               <div class="profile-detail">
                 <span class="profile-detail-icon"><i class="bi bi-calendar3"></i></span>
-                {% if profile and user.is_authenticated and user.id == profile.user.id %}
                 <div>
                   <span class="profile-label">Date de naissance</span>
                   <div class="profile-value">{% if staff and staff.date_birthday %}{{ staff.date_birthday|date:"d F Y" }}{% else %}Non renseignee{% endif %}</div>
                 </div>
-                {% endif %}
               </div>
+            {% endif %}
             </div>
           </article>
 
