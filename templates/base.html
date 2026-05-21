@@ -15,9 +15,16 @@
     <meta name="facebook:image" content="{% if core.logo %}  {{core.logo.url}}{% endif %}">
 
     <!-- Favicons -->
-    <link href="{{core.logo.url}}" rel="icon">
-    <link href="{{core.logo.url}}" rel="shortcut icon">
-    <link href="{{core.logo.url}}" type="image/png" rel="apple-touch-icon">
+    <!-- Favicons -->
+    {% if core.logo %}
+        <link href="{{core.logo.url}}" rel="icon">
+        <link href="{{core.logo.url}}" rel="shortcut icon">
+        <link href="{{core.logo.url}}" type="image/png" rel="apple-touch-icon">
+    {% else %}
+        <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+        <link href="{% static 'assets/img/favicon.png' %}" rel="shortcut icon">
+        <link href="{% static 'assets/img/favicon.png' %}" type="image/png" rel="apple-touch-icon">
+    {% endif %}
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
