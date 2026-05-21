@@ -122,6 +122,39 @@
     font-weight: 500;
 }
 
+/* Ensure ticker doesn't cover other content on small screens and text remains readable */
+.hero .event-ticker {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    overflow-x: auto;
+    align-items: center;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+}
+
+.hero .event-ticker .ticker-item {
+    flex: 0 0 auto;
+    min-width: 200px;
+    max-width: 320px;
+    background: transparent;
+    padding: 0.75rem 1rem;
+    text-align: center;
+}
+
+.hero .event-ticker .ticker-item .title,
+.hero .event-ticker .ticker-item .date {
+    color: var(--contrast-color) !important;
+}
+
+/* Make sure stats-card sits above the ticker when needed */
+.stats-card {
+    position: relative;
+    z-index: 5;
+}
+
 /* ============================================================
    ABOUT SECTION IMPROVEMENTS
    ============================================================ */
