@@ -183,7 +183,7 @@ class Box(models.Model):
                     raise ValidationError(
                         {
                             "month": (
-                                f"Impossible de payer le mois {MonthChoice(earlier_month).label} "
+                                f"Impossible de payer ce mois "
                                 f"avant la régularisation de la dette précédente. "
                                 f"Il reste {self.fees.amount - total_paye_earlier:.2f} FC à payer pour "
                                 f"le mois {MonthChoice(earlier_month).label}."
