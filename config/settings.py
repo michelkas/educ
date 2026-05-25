@@ -28,7 +28,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['whilesolution.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 ADMIN_SITE_HEADER = "Panneau d'administration"
-ADMIN_SITE_TITLE = "Administration While Educ"
+ADMIN_SITE_TITLE = "Administration"
 
 
 # Application definition
@@ -155,7 +155,7 @@ JAZZMIN_SETTINGS = {
     # -- Titres et marques --
     "site_title": "Administration",
     "site_header": "Panneau d'administration",
-    "site_brand": "While Educ Admin",
+    "site_brand": "Admin",
     "welcome_sign": "Bienvenue dans l'administration",
 
     # -- Logos et icônes --
